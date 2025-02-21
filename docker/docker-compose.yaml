@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  reader-frontoffice:
+    build: ./
+    volumes:
+      - ..:/usr/src/app
+    ports:
+      - "3211:3211"
+    command: yarn start
+    networks:
+      - backend
+
+networks:
+  backend:
+    name: laradock_backend
+    external: true
