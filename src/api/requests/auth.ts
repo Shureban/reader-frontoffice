@@ -1,20 +1,12 @@
-import {Tariff} from "api/enums/tariff";
-import {OrganizationType} from "api/enums/organization";
-
 export type TLoginRequest = {
     email: string,
     password: string,
 }
 
 export type TRegistrationRequest = {
-    name: string,
     email: string,
     password: string,
-    tariff: Tariff,
-    organization_name: string,
-    organization_email: string,
-    organization_type: OrganizationType,
-    organization_account_name: string,
+    password_confirmation: string,
 }
 
 export type TConfirmEmailRequest = {

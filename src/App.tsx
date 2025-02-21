@@ -12,6 +12,7 @@ import {Spin} from "antd";
 import {observer} from "mobx-react";
 import {CabinetRoutes} from "routes/cabinet";
 import AuthAccess from "policies/auth-access";
+import Registration from "domains/auth/pages/registration";
 
 const App: React.FC = observer(() => {
     if (!isMobile) {
@@ -55,8 +56,7 @@ const App: React.FC = observer(() => {
                     path={AuthRoutes.registration()}
                     element={
                         <GuestAccess>
-                            <div>Registration</div>
-                            {/*<Registration key="reg" />*/}
+                            <Registration />
                         </GuestAccess>
                     }
                 />
