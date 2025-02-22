@@ -13,6 +13,7 @@ import {observer} from "mobx-react";
 import {CabinetRoutes} from "routes/cabinet";
 import AuthAccess from "policies/auth-access";
 import Registration from "domains/auth/pages/registration";
+import Home from "domains/cabinet/pages/home";
 
 const App: React.FC = observer(() => {
     if (!isMobile) {
@@ -82,7 +83,7 @@ const App: React.FC = observer(() => {
                     path={CabinetRoutes.home()}
                     element={
                         <AuthAccess>
-                            <div>Home</div>
+                            <Home />
                         </AuthAccess>
                     }
                 />

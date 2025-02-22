@@ -6,7 +6,7 @@ services:
       - ..:/usr/src/app
     ports:
       - "3211:3211"
-    command: yarn start
+    command: npm run dev
     networks:
       - backend
 

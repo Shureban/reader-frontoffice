@@ -9,4 +9,6 @@ export enum ApiRoute {
     AuthResetPassword                = '/auth/reset-password',
 
     UsersMe                          = '/users/me',
+
+    BooksList                        = '/books',
 }
