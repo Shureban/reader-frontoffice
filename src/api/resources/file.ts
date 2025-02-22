@@ -1,11 +1,11 @@
 export type TFile = {
-    id: number;
+    download_link: string;
 }
 
 export default class FileResource implements TFile {
-    public id: number;
+    public download_link: string;
 
     constructor(data: TFile) {
-        this.id = data.id;
+        this.download_link = data.download_link;
     }
 };

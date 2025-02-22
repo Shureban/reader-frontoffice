@@ -6,6 +6,8 @@ import {BooksApi} from "api/entrypoint";
 import {TBooksListRequest} from "api/requests/books";
 import {Col, Row} from "antd";
 import Wrapper from "domains/cabinet/components/wrapper";
+import BookCover from "domains/cabinet/pages/home/components/book-cover";
+import {SortType} from "api/enums/sort-type";
 
 const Home: React.FC = observer(() => {
     const {appStore}                            = useRootStore();
@@ -15,7 +17,7 @@ const Home: React.FC = observer(() => {
     useEffect(() => {
         Promise.resolve()
             .then(() => appStore.pageIsLocked())
-            .then(() => BooksApi.list({page: 1, per_page: 20} as TBooksListRequest)
+            .then(() => BooksApi.list({page: 1, per_page: 20, sort_type: SortType.Asc} as TBooksListRequest)
                 .then((response) => setAvailableBooks(response.data))
             )
             .catch((error) => console.log(error))
@@ -27,26 +29,18 @@ const Home: React.FC = observer(() => {
             <Row>
                 <Col span={24}>
                     <div className="scrollable-strip">
-                        {availableBooks.map((book, index) => (
-                            <div
-                                key={index}
-                                className="book-cover"
-                                style={{backgroundImage: `url(${book.coverUrl})`}}
-                            />
-                        ))}
+                        {availableBooks.map((book, index) => (<div key={index}>
+                            <BookCover book={book} />
+                        </div>))}
                     </div>
                 </Col>
             </Row>
             <Row>
                 <Col span={24}>
                     <div className="scrollable-strip">
-                        {availableBooks.map((book, index) => (
-                            <div
-                                key={index}
-                                className="book-cover"
-                                style={{backgroundImage: `url(${book.coverUrl})`}}
-                            />
-                        ))}
+                        {booksInProgress.map((book, index) => (<div key={index}>
+                            <BookCover book={book} />
+                        </div>))}
                     </div>
                 </Col>
             </Row>

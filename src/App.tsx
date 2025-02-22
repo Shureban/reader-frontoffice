@@ -14,6 +14,7 @@ import {CabinetRoutes} from "routes/cabinet";
 import AuthAccess from "policies/auth-access";
 import Registration from "domains/auth/pages/registration";
 import Home from "domains/cabinet/pages/home";
+import BookView from "domains/cabinet/pages/book-view";
 
 const App: React.FC = observer(() => {
     if (!isMobile) {
@@ -84,6 +85,14 @@ const App: React.FC = observer(() => {
                     element={
                         <AuthAccess>
                             <Home />
+                        </AuthAccess>
+                    }
+                />
+                <Route
+                    path={CabinetRoutes.bookPreview()}
+                    element={
+                        <AuthAccess>
+                            <BookView />
                         </AuthAccess>
                     }
                 />
