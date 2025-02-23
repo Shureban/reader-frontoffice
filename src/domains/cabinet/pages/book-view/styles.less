@@ -6,7 +6,7 @@
     margin-bottom: 10px;
 
     &__title {
-      margin-bottom: 0;
+      margin-bottom: 0 !important;
     }
 
     &__subtitle {
@@ -18,13 +18,17 @@
     margin-bottom: 50px;
     padding: 0 10px;
   }
-}
 
-.button {
-  &_fixed-bottom {
+  &__progress-action {
     position: fixed;
     bottom: 0;
     left: 0;
+    width: 100%;
     z-index: 1000; /* Забезпечує, що кнопка буде поверх інших елементів */
+
+    .ant-btn {
+      border-radius: 8px 8px 0 0;
+    }
   }
 }
+

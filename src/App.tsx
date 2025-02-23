@@ -16,6 +16,7 @@ import Registration from "domains/auth/pages/registration";
 import Home from "domains/cabinet/pages/home";
 import BookView from "domains/cabinet/pages/book-view";
 import Logout from "domains/auth/pages/logout";
+import BookReading from "domains/cabinet/pages/book-reading";
 
 const App: React.FC = observer(() => {
     if (!isMobile) {
@@ -109,7 +110,7 @@ const App: React.FC = observer(() => {
                     path={CabinetRoutes.bookReading()}
                     element={
                         <AuthAccess>
-                            <BookView />
+                            <BookReading />
                         </AuthAccess>
                     }
                 />

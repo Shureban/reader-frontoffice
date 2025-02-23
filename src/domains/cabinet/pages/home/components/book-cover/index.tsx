@@ -16,7 +16,12 @@ const BookCover: React.FC<IProps> = observer((props) => {
     return (
         <Link to={CabinetRoutes.bookPreview(book.author.url_slug, book.url_slug)}>
             <div className="book-cover">
-                <Image src={props.book.cover_file?.download_link} preview={false} />
+                {props.book.cover_file && (
+                    <Image src={props.book.cover_file?.download_link} preview={false} />
+                )}
+                {!props.book.cover_file && (
+                    <Image src={'/empty-book-cover.png'} preview={false} />
+                )}
             </div>
         </Link>
     );

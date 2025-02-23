@@ -11,6 +11,7 @@ import {Button, Image, Typography} from "antd";
 import {TGetProgressRequest, TStartBookReadingRequest} from "api/requests/users-books";
 import {SyncOutlined} from '@ant-design/icons';
 import {CabinetRoutes} from "routes/cabinet";
+import BookProgressResource from "api/resources/book-progress";
 
 const {Title, Text} = Typography;
 
@@ -20,7 +21,8 @@ const BookView: React.FC = observer(() => {
     const {authorSlug}                        = useParams() || '';
     const {bookSlug}                          = useParams() || '';
     const [book, setBook]                     = React.useState<BookResource | undefined>();
-    const [bookInProgress, setBookInProgress] = React.useState<boolean | undefined>();
+    const [bookProgress, setBookProgress]     = React.useState<BookProgressResource | undefined>();
+    const [bookInProgress, setBookInProgress] = React.useState<boolean>(false);
     const [buttonLoading, setButtonLoading]   = React.useState<boolean>(true);
 
     useEffect(() => {
@@ -40,22 +42,23 @@ const BookView: React.FC = observer(() => {
         }
 
         Promise.resolve()
-            .then(() => UsersBooksApi.getProgress({book_id: book.id} as TGetProgressRequest))
+            .then(() => UsersBooksApi.getBookProgress({book_id: book.id} as TGetProgressRequest))
+            .then((bookProgress) => setBookProgress(bookProgress))
             .then(() => setBookInProgress(true))
-            .catch(() => setBookInProgress(false))
+            .catch(() => setBookInProgress(false));
     }, [book]);
 
     const onClickStartReading = () => Promise.resolve()
         .then(() => appStore.lockPage())
         .then(() => setButtonLoading(true))
         .then(() => UsersBooksApi.startReading({book_id: book?.id} as TStartBookReadingRequest))
-        .then(() => navigate(CabinetRoutes.bookReading(book?.author.url_slug, book?.url_slug)))
+        .then((bookProgress) => navigate(CabinetRoutes.bookReading(bookProgress.uuid)))
         .finally(() => appStore.unlockPage());
 
     const onClickContinueReading = () => Promise.resolve()
         .then(() => appStore.lockPage())
         .then(() => setButtonLoading(true))
-        .then(() => navigate(CabinetRoutes.bookReading(book?.author.url_slug, book?.url_slug)))
+        .then(() => navigate(CabinetRoutes.bookReading(bookProgress?.uuid)))
         .finally(() => appStore.unlockPage());
 
     if (!book) {
@@ -79,18 +82,18 @@ const BookView: React.FC = observer(() => {
                     <Image src={book.cover_file?.download_link} />
                 </div>
                 <div className='book-info__description'>{book.description}</div>
-                {bookInProgress !== undefined && (<>
+                <div className='book-info__progress-action'>
                     {bookInProgress && (
-                        <Button className='button_fixed-bottom' loading={buttonLoading ? {icon: <SyncOutlined spin />} : false} size={'large'} type={'primary'} block onClick={onClickContinueReading}>
+                        <Button loading={buttonLoading ? {icon: <SyncOutlined spin />} : false} size={'large'} type={'primary'} block onClick={onClickContinueReading}>
                             Continue reading
                         </Button>
                     )}
                     {!bookInProgress && (
-                        <Button className='button_fixed-bottom' loading={buttonLoading ? {icon: <SyncOutlined spin />} : false} size={'large'} type={'primary'} block onClick={onClickStartReading}>
+                        <Button loading={buttonLoading ? {icon: <SyncOutlined spin />} : false} size={'large'} type={'primary'} block onClick={onClickStartReading}>
                             Start reading
                         </Button>
                     )}
-                </>)}
+                </div>
             </div>
         </Wrapper>
     );

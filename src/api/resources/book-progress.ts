@@ -1,11 +1,16 @@
+import {TBook} from "api/resources/book";
+
 export type TBookProgress = {
-    id: number;
+    uuid: string;
+    book: TBook;
 }
 
 export default class BookProgressResource implements TBookProgress {
-    public id: number;
+    public uuid: string;
+    public book: TBook;
 
     constructor(data: TBookProgress) {
-        this.id = data.id;
+        this.uuid = data.uuid;
+        this.book = data.book;
     }
 };
