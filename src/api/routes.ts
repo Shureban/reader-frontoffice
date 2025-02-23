@@ -11,4 +11,8 @@ export enum ApiRoute {
     UsersMe                          = '/users/me',
 
     BooksList                        = '/books',
+    BookInfoList                     = '/books/:authorSlug/:bookSlug',
+
+    UsersBooksGetProgress            = '/users/books/progress',
+    UsersBooksStartReadingProgress   = '/users/books/progress',
 }

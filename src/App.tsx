@@ -15,6 +15,7 @@ import AuthAccess from "policies/auth-access";
 import Registration from "domains/auth/pages/registration";
 import Home from "domains/cabinet/pages/home";
 import BookView from "domains/cabinet/pages/book-view";
+import Logout from "domains/auth/pages/logout";
 
 const App: React.FC = observer(() => {
     if (!isMobile) {
@@ -81,6 +82,14 @@ const App: React.FC = observer(() => {
                     }
                 />
                 <Route
+                    path={AuthRoutes.logout()}
+                    element={
+                        <AuthAccess>
+                            <Logout />
+                        </AuthAccess>
+                    }
+                />
+                <Route
                     path={CabinetRoutes.home()}
                     element={
                         <AuthAccess>
@@ -90,6 +99,14 @@ const App: React.FC = observer(() => {
                 />
                 <Route
                     path={CabinetRoutes.bookPreview()}
+                    element={
+                        <AuthAccess>
+                            <BookView />
+                        </AuthAccess>
+                    }
+                />
+                <Route
+                    path={CabinetRoutes.bookReading()}
                     element={
                         <AuthAccess>
                             <BookView />

@@ -1,22 +1,34 @@
+import './styles.less';
 import React from "react";
 import {observer} from "mobx-react";
-import {Layout} from "antd";
+import {Layout, Spin} from "antd";
 import {Header} from "antd/es/layout/layout";
 import Menu from "domains/cabinet/components/menu";
+import {useRootStore} from "RootStoreContext";
 
 interface IWrapperProps {
     children?: React.ReactNode;
 }
 
 const Wrapper: React.FC = observer((props: IWrapperProps) => {
+    const {appStore} = useRootStore();
+
     return (
         <Layout>
-            <Header>
+            {appStore.pageIsLocked() && (
+                <div className='loader-overlay'>
+                    <Spin size='large' />
+                </div>
+            )}
+
+            <Header className='cabinet-header'>
                 <div className="logo" />
                 <Menu />
             </Header>
 
-            {props.children}
+            <div className='content-wrapper'>
+                {props.children}
+            </div>
         </Layout>
     );
 });

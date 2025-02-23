@@ -16,7 +16,7 @@ const Home: React.FC = observer(() => {
 
     useEffect(() => {
         Promise.resolve()
-            .then(() => appStore.pageIsLocked())
+            .then(() => appStore.lockPage())
             .then(() => BooksApi.list({page: 1, per_page: 20, sort_type: SortType.Asc} as TBooksListRequest)
                 .then((response) => setAvailableBooks(response.data))
             )
@@ -26,24 +26,29 @@ const Home: React.FC = observer(() => {
 
     return (
         <Wrapper>
-            <Row>
-                <Col span={24}>
-                    <div className="scrollable-strip">
-                        {availableBooks.map((book, index) => (<div key={index}>
-                            <BookCover book={book} />
-                        </div>))}
-                    </div>
-                </Col>
-            </Row>
-            <Row>
-                <Col span={24}>
-                    <div className="scrollable-strip">
-                        {booksInProgress.map((book, index) => (<div key={index}>
-                            <BookCover book={book} />
-                        </div>))}
-                    </div>
-                </Col>
-            </Row>
+            {availableBooks.length > 0 && (
+                <Row>
+                    <Col span={24}>
+                        <div className="scrollable-strip mb-10">
+                            {availableBooks.map((book, index) => (<div key={index}>
+                                <BookCover book={book} />
+                            </div>))}
+                        </div>
+                    </Col>
+                </Row>
+            )}
+
+            {booksInProgress.length > 0 && (
+                <Row>
+                    <Col span={24}>
+                        <div className="scrollable-strip">
+                            {booksInProgress.map((book, index) => (<div key={index}>
+                                <BookCover book={book} />
+                            </div>))}
+                        </div>
+                    </Col>
+                </Row>
+            )}
         </Wrapper>
     );
 });

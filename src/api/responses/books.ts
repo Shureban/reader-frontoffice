@@ -7,5 +7,7 @@ export type TBooksListResponse = {
 };
 
 export type TBookResponse = {
-    data: TBook;
+    data: {
+        data: TBook;
+    };
 };

@@ -7,6 +7,6 @@ export default class Users extends Source {
 
     public async me(): Promise<UserResource> {
         return this.client.get(ApiRoute.UsersMe)
-            .then((response: TUsersMeResponse) => new UserResource(response.data));
+            .then((response: TUsersMeResponse) => new UserResource(response.data.data));
     }
 }
