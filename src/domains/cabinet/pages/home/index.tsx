@@ -8,7 +8,7 @@ import {Col, Row} from "antd";
 import Wrapper from "domains/cabinet/components/wrapper";
 import BookCover from "domains/cabinet/pages/home/components/book-cover";
 import {SortType} from "api/enums/sort-type";
-import {TBooksProgressListRequest} from "api/requests/users-books";
+import {ListRequestSortColumn, TBooksProgressListRequest} from "api/requests/users-books";
 import BookResource from "api/resources/book";
 import BookProgressResource from "api/resources/book-progress";
 
@@ -27,7 +27,7 @@ const Home: React.FC = observer(() => {
             .finally(() => appStore.unlockPage());
         Promise.resolve()
             .then(() => appStore.lockPage())
-            .then(() => UsersBooksApi.list({page: 1, per_page: 20, sort_type: SortType.Desc} as TBooksProgressListRequest)
+            .then(() => UsersBooksApi.list({page: 1, per_page: 20, sort_column: ListRequestSortColumn.UpdatedAt, sort_type: SortType.Desc} as TBooksProgressListRequest)
                 .then((response) => setBooksInProgress(response.data))
             )
             .catch((error) => console.log(error))

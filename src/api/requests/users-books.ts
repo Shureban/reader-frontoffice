@@ -1,7 +1,9 @@
 import {SortType} from "api/enums/sort-type";
 
 export enum ListRequestSortColumn {
-    Id = 'id',
+    Id        = 'id',
+    CreatedAt = 'created_at',
+    UpdatedAt = 'updated_at',
 }
 
 export type TBooksProgressListRequest = {

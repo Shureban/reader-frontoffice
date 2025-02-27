@@ -1,33 +1,76 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {observer} from "mobx-react";
-import Wrapper from "domains/cabinet/components/wrapper";
 import {useRootStore} from "RootStoreContext";
 import {useNavigate, useParams} from "react-router-dom";
-import {UsersBooksApi} from "api/entrypoint";
+import {BookPagesApi, UsersBooksApi} from "api/entrypoint";
 import BookProgressResource from "api/resources/book-progress";
+import ControlsOverlay from "domains/cabinet/pages/book-reading/controls-overlay";
+import Reader from "domains/cabinet/pages/book-reading/reader";
+import {CabinetRoutes} from "routes/cabinet";
+import PageResource from "api/resources/page";
+import {ListRequestSortColumn, TBooksPagesListRequest} from "api/requests/book-pages";
+import {SortType} from "api/enums/sort-type";
+
+const WordsPerMinute = 100;
 
 const BookReading: React.FC = observer(() => {
-    const {appStore}                      = useRootStore();
-    const navigate                        = useNavigate();
-    const {uuid}                          = useParams() || '';
-    const [bookProgress, setBookProgress] = React.useState<BookProgressResource | undefined>();
+    const {appStore}                          = useRootStore();
+    const navigate                            = useNavigate();
+    const {uuid}                              = useParams() || '';
+    const [bookProgress, setBookProgress]     = useState<BookProgressResource | undefined>();
+    const [pagesList, setPagesList]           = useState<PageResource[]>([]);
+    const [isPlaying, setIsPlaying]           = useState<boolean>(false);
+    const [controlsHidden, setControlsHidden] = useState<boolean>(false);
 
     useEffect(() => {
         Promise.resolve()
             .then(() => appStore.lockPage())
-            .then(() => UsersBooksApi.show(uuid)
-                .then((book) => setBookProgress(book))
-            )
+            .then(() => UsersBooksApi.show(uuid))
+            .then((bookProgress) => Promise.resolve()
+                .then(() => setBookProgress(bookProgress))
+                .then(() => BookPagesApi.list(
+                    bookProgress.book.author.url_slug,
+                    bookProgress.book.url_slug,
+                    {page: 1, per_page: 10000, sort_column: ListRequestSortColumn.Number, sort_type: SortType.Asc} as TBooksPagesListRequest)
+                )
+                .then((response) => setPagesList(response.data)))
             .catch((error) => console.log(error))
             .finally(() => appStore.unlockPage());
     }, []);
 
-    console.log(bookProgress);
-    return (
-        <Wrapper>
+    const onClickCloseButton   = () => {
+        navigate(CabinetRoutes.bookPreview(bookProgress?.book.author.url_slug, bookProgress?.book.url_slug));
+    }
+    const onClickPlayButton    = () => {
+        setIsPlaying(true);
+    }
+    const onClickPauseButton   = () => {
+        setIsPlaying(false);
+    }
+    const onClickScrollBack    = () => {
+        console.log('scroll-back');
+    }
+    const onClickScrollForward = () => {
+        console.log('scroll-forward');
+    }
 
-        </Wrapper>
-    );
+    return (<>
+        <ControlsOverlay
+            isPlaying={isPlaying}
+            onClickCloseButton={() => onClickCloseButton()}
+            onClickPlayButton={() => onClickPlayButton()}
+            onClickPauseButton={() => onClickPauseButton()}
+            onClickScrollBack={() => onClickScrollBack()}
+            onClickScrollForward={() => onClickScrollForward()}
+        />
+        <Reader
+            isPlaying={isPlaying}
+            pagesList={pagesList}
+            currentPage={bookProgress?.page}
+            onClickCloseButton={onClickCloseButton}
+            onClickPauseButton={onClickPauseButton}
+        />
+    </>);
 });
 
 export default BookReading;

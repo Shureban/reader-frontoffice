@@ -13,6 +13,8 @@ export enum ApiRoute {
     BooksList                        = '/books',
     BookInfoList                     = '/books/:authorSlug/:bookSlug',
 
+    BookPagesList                    = '/books/:authorSlug/:bookSlug/pages',
+
     UsersBooksProgressList           = '/users/books',
     UsersBooksShowBookProgress       = '/users/books/progress/:uuid',
     UsersBooksGetBookProgress        = '/users/books/progress',
