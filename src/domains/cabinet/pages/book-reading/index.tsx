@@ -11,16 +11,17 @@ import PageResource from "api/resources/page";
 import {ListRequestSortColumn, TBooksPagesListRequest} from "api/requests/book-pages";
 import {SortType} from "api/enums/sort-type";
 
-const WordsPerMinute = 100;
+const WordsPerMinute = 10;
 
 const BookReading: React.FC = observer(() => {
-    const {appStore}                          = useRootStore();
-    const navigate                            = useNavigate();
-    const {uuid}                              = useParams() || '';
-    const [bookProgress, setBookProgress]     = useState<BookProgressResource | undefined>();
-    const [pagesList, setPagesList]           = useState<PageResource[]>([]);
-    const [isPlaying, setIsPlaying]           = useState<boolean>(false);
-    const [controlsHidden, setControlsHidden] = useState<boolean>(false);
+    const {appStore}                            = useRootStore();
+    const navigate                              = useNavigate();
+    const {uuid}                                = useParams() || '';
+    const [bookProgress, setBookProgress]       = useState<BookProgressResource | undefined>();
+    const [pagesList, setPagesList]             = useState<PageResource[]>([]);
+    const [currentPage, setCurrentPage]         = useState<PageResource | undefined>();
+    const [currentSentence, setCurrentSentence] = useState<string>("");
+    const [isPlaying, setIsPlaying]             = useState<boolean>(false);
 
     useEffect(() => {
         Promise.resolve()
@@ -28,6 +29,8 @@ const BookReading: React.FC = observer(() => {
             .then(() => UsersBooksApi.show(uuid))
             .then((bookProgress) => Promise.resolve()
                 .then(() => setBookProgress(bookProgress))
+                .then(() => setCurrentPage(bookProgress.page))
+                .then(() => setCurrentSentence(bookProgress.page.sentences[0]))
                 .then(() => BookPagesApi.list(
                     bookProgress.book.author.url_slug,
                     bookProgress.book.url_slug,
@@ -64,11 +67,11 @@ const BookReading: React.FC = observer(() => {
             onClickScrollForward={() => onClickScrollForward()}
         />
         <Reader
+            fontSize={4}
+            wordsPerMinute={WordsPerMinute}
             isPlaying={isPlaying}
-            pagesList={pagesList}
-            currentPage={bookProgress?.page}
-            onClickCloseButton={onClickCloseButton}
-            onClickPauseButton={onClickPauseButton}
+            sentence={currentSentence}
+            onSentenceEnd={() => console.log('onSentenceEnd')}
         />
     </>);
 });

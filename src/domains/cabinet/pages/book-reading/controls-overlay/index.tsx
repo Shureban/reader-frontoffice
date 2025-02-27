@@ -26,7 +26,7 @@ const Controls: React.FC<IProps> = (props) => {
 
     const onClickPauseButton = () => Promise.resolve()
         .then(() => setIsHiddenPausedControls(false))
-        .then(() => setIsHiddenReadingControls(() => true))
+        .then(() => setIsHiddenReadingControls(true))
         .then(() => props.onClickPauseButton());
 
     const showReadingControls = () => {
@@ -42,7 +42,7 @@ const Controls: React.FC<IProps> = (props) => {
         <div className={'controls-overlay'}>
             <div className={'paused-controls ' + (isHiddenPausedControls ? 'hidden' : '')}>
                 <div className='top-controls'>
-                    <div className='btn btn_40 btn_gray m-20' onClick={props.onClickCloseButton}>
+                    <div className='btn btn_40 btn_gray p-20' onClick={props.onClickCloseButton}>
                         <CloseOutlined />
                     </div>
                 </div>
@@ -61,10 +61,10 @@ const Controls: React.FC<IProps> = (props) => {
 
             <div className={'reading-controls ' + (isHiddenReadingControls ? 'hidden' : '')} onClick={() => showReadingControls()}>
                 <div className='top-controls'>
-                    <div className='btn btn_40 btn_gray m-20' onClick={props.onClickCloseButton}>
+                    <div className='btn btn_40 btn_gray p-20' onClick={props.onClickCloseButton}>
                         <CloseOutlined />
                     </div>
-                    <div className='btn btn_40 btn_gray m-20' onClick={onClickPauseButton}>
+                    <div className='btn btn_40 btn_gray p-20' onClick={onClickPauseButton}>
                         <PauseOutlined />
                     </div>
                 </div>
