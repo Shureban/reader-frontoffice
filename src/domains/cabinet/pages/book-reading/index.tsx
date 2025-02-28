@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {observer} from "mobx-react";
 import {useRootStore} from "RootStoreContext";
 import {useNavigate, useParams} from "react-router-dom";
-import {BookPagesApi, UsersBooksApi} from "api/entrypoint";
+import {BookPagesApi, UsersApi, UsersBooksApi} from "api/entrypoint";
 import BookProgressResource from "api/resources/book-progress";
 import ControlsOverlay from "domains/cabinet/pages/book-reading/controls-overlay";
 import Reader from "domains/cabinet/pages/book-reading/reader";
@@ -11,8 +11,7 @@ import PageResource from "api/resources/page";
 import {ListRequestSortColumn, TBooksPagesListRequest} from "api/requests/book-pages";
 import {SortType} from "api/enums/sort-type";
 import {TUpdateProgressRequest} from "api/requests/users-books";
-
-const WordsPerMinute = 600;
+import {TUpdateUserSettingsRequest} from "api/requests/users";
 
 const BookReading: React.FC = observer(() => {
     const {appStore}                                      = useRootStore();
@@ -23,6 +22,8 @@ const BookReading: React.FC = observer(() => {
     const [currentPage, setCurrentPage]                   = useState<PageResource | undefined>();
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
     const [isPlaying, setIsPlaying]                       = useState<boolean>(false);
+    const [wordsPerMinute, setWordsPerMinute]             = useState<number>(appStore.getUser().settings.words_per_minute);
+    const [fontSize, setFontSize]                         = useState<number>(appStore.getUser().settings.font_size);
 
     useEffect(() => {
         Promise.resolve()
@@ -79,6 +80,25 @@ const BookReading: React.FC = observer(() => {
         }
     }
 
+    const updateUserSettings = (wordsPerMinute: number, fontSize: number) => {
+        wordsPerMinute = wordsPerMinute < 1 ? 1 : wordsPerMinute;
+        wordsPerMinute = wordsPerMinute > 1000 ? 1000 : wordsPerMinute;
+        fontSize       = fontSize < 1 ? 1 : fontSize;
+        fontSize       = fontSize > 100 ? 100 : fontSize;
+
+        return Promise.resolve()
+            .then(() => setWordsPerMinute(wordsPerMinute))
+            .then(() => setFontSize(fontSize))
+            .then(() => {
+                const user                     = appStore.getUser();
+                user.settings.words_per_minute = wordsPerMinute;
+                user.settings.font_size        = fontSize;
+                appStore.setUser(user);
+            })
+            .then(() => UsersApi.updateSettings({words_per_minute: wordsPerMinute, font_size: fontSize} as TUpdateUserSettingsRequest))
+            .catch((error) => console.log(error));
+    };
+
     const onClickCloseButton   = () => navigate(CabinetRoutes.bookPreview(bookProgress?.book.author.url_slug, bookProgress?.book.url_slug))
     const onClickPlayButton    = () => setIsPlaying(true)
     const onClickPauseButton   = () => setIsPlaying(false)
@@ -89,15 +109,20 @@ const BookReading: React.FC = observer(() => {
     return (<>
         <ControlsOverlay
             isPlaying={isPlaying}
+            pageTitle={currentPage?.name || ''}
+            wordsPerMinute={wordsPerMinute}
+            fontSize={fontSize}
             onClickCloseButton={() => onClickCloseButton()}
             onClickPlayButton={() => onClickPlayButton()}
             onClickPauseButton={() => onClickPauseButton()}
             onClickScrollBack={() => onClickScrollBack()}
             onClickScrollForward={() => onClickScrollForward()}
+            onChangeWordsPerMinute={(newWordsPerMinute) => updateUserSettings(newWordsPerMinute, fontSize)}
+            onChangeFontSize={(newFontSize) => updateUserSettings(wordsPerMinute, newFontSize)}
         />
         <Reader
-            fontSize={4}
-            wordsPerMinute={WordsPerMinute}
+            fontSize={fontSize}
+            wordsPerMinute={wordsPerMinute}
             isPlaying={isPlaying}
             sentence={currentPage?.sentences[currentSentenceIndex] || ''}
             onSentenceEnd={() => onSentenceEnd()}

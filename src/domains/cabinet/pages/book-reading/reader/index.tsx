@@ -29,11 +29,11 @@ const Reader: React.FC<IProps> = (props) => {
         }, 60000 / props.wordsPerMinute);
 
         return () => clearInterval(interval);
-    }, [props.isPlaying, props.sentence]);
+    }, [props.isPlaying, props.sentence, props.wordsPerMinute]);
 
     return (
         <div className={'reader'}>
-            <div className={'reader__content'}>
+            <div className={'reader__content'} style={{fontSize: props.fontSize}}>
                 {props.sentence.split(' ').map((word, index) => {
                     return index <= currentWordIndex
                         ? <span key={index}>{word}&nbsp;</span>

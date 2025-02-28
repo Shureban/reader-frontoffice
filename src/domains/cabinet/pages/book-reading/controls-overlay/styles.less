@@ -56,11 +56,22 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 70vw;
+
+    &_w-70 {
+      width: 70vw;
+    }
+
+    &_w-100 {
+      width: 100vw;
+    }
+  }
+
+  .title {
+    font-size: 25px;
+    color: gray;
   }
 
   .btn {
-
     &_white > span {
       color: white;
     }
@@ -69,16 +80,36 @@
       color: gray;
     }
 
-    &_40 > span {
-      width: 40px;
-      height: 40px;
-      font-size: 40px;
+    &_20 > span {
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+    }
+
+    &_30 > span {
+      width: 30px;
+      height: 30px;
+      font-size: 30px;
     }
 
     &_60 > span {
       width: 60px;
       height: 60px;
       font-size: 60px;
+    }
+  }
+
+  .settings-value {
+    margin-left: 5px;
+    margin-top: 7px;
+    font-size: 20px;
+    color: grey;
+  }
+
+  .text-speed-controls, .font-size-controls {
+    & > div {
+      display: flex;
+      justify-content: center;
     }
   }
 

@@ -1,14 +1,19 @@
 import './styles.less';
 import React, {useState} from "react";
-import {CloseOutlined, PauseOutlined, PlayCircleOutlined, RedoOutlined, UndoOutlined} from '@ant-design/icons';
+import {CloseOutlined, MinusOutlined, PauseOutlined, PlayCircleOutlined, PlusOutlined, RedoOutlined, UndoOutlined} from '@ant-design/icons';
 
 interface IProps {
     isPlaying: boolean;
+    pageTitle: string;
+    wordsPerMinute: number;
+    fontSize: number;
     onClickCloseButton: () => void;
     onClickPlayButton: () => void;
     onClickPauseButton: () => void;
     onClickScrollBack: () => void;
     onClickScrollForward: () => void;
+    onChangeWordsPerMinute: (value: number) => void;
+    onChangeFontSize: (value: number) => void;
 }
 
 const ThreeSeconds = 3000;
@@ -38,15 +43,25 @@ const Controls: React.FC<IProps> = (props) => {
             .then((timer) => setTimerHidingReadingControls(timer));
     };
 
+    const getPreparedTitle = (title: string) => {
+        if (!title) {
+            return '';
+        }
+
+        const isNumber = !isNaN(Number(title));
+
+        return isNumber ? `Page ${title}` : title;
+    };
+
     return (
         <div className={'controls-overlay'}>
             <div className={'paused-controls ' + (isHiddenPausedControls ? 'hidden' : '')}>
                 <div className='top-controls'>
-                    <div className='btn btn_40 btn_gray p-20' onClick={props.onClickCloseButton}>
+                    <div className='btn btn_30 btn_gray p-20' onClick={props.onClickCloseButton}>
                         <CloseOutlined />
                     </div>
                 </div>
-                <div className='center-controls'>
+                <div className='center-controls center-controls_w-70'>
                     <div className='btn btn_60 btn_gray scroll-back' onClick={props.onClickScrollBack}>
                         <UndoOutlined />
                     </div>
@@ -61,11 +76,38 @@ const Controls: React.FC<IProps> = (props) => {
 
             <div className={'reading-controls ' + (isHiddenReadingControls ? 'hidden' : '')} onClick={() => showReadingControls()}>
                 <div className='top-controls'>
-                    <div className='btn btn_40 btn_gray p-20' onClick={props.onClickCloseButton}>
+                    <div className='btn btn_30 btn_gray p-20' onClick={props.onClickCloseButton}>
                         <CloseOutlined />
                     </div>
-                    <div className='btn btn_40 btn_gray p-20' onClick={onClickPauseButton}>
+                    <div className={'title'}>
+                        {getPreparedTitle(props.pageTitle)}
+                    </div>
+                    <div className='btn btn_30 btn_gray p-20' onClick={onClickPauseButton}>
                         <PauseOutlined />
+                    </div>
+                </div>
+                <div className='center-controls center-controls_w-100'>
+                    <div className={'font-size-controls p-20'}>
+                        <div className='btn btn_20 btn_gray' onClick={() => props.onChangeFontSize(props.fontSize + 1)}>
+                            <PlusOutlined />
+                        </div>
+                        <div className={'settings-value'}>
+                            {props.fontSize}
+                        </div>
+                        <div className='btn btn_20 btn_gray' onClick={() => props.onChangeFontSize(props.fontSize - 1)}>
+                            <MinusOutlined />
+                        </div>
+                    </div>
+                    <div className={'text-speed-controls p-20'}>
+                        <div className='btn btn_20 btn_gray' onClick={() => props.onChangeWordsPerMinute(props.wordsPerMinute + 5)}>
+                            <PlusOutlined />
+                        </div>
+                        <div className={'settings-value'}>
+                            {props.wordsPerMinute}
+                        </div>
+                        <div className='btn btn_20 btn_gray' onClick={() => props.onChangeWordsPerMinute(props.wordsPerMinute - 5)}>
+                            <MinusOutlined />
+                        </div>
                     </div>
                 </div>
             </div>
