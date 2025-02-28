@@ -19,4 +19,5 @@ export enum ApiRoute {
     UsersBooksShowBookProgress       = '/users/books/progress/:uuid',
     UsersBooksGetBookProgress        = '/users/books/progress',
     UsersBooksStartReadingProgress   = '/users/books/progress',
+    UsersBooksUpdateProgress         = '/users/books/progress',
 }

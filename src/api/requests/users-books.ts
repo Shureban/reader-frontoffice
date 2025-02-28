@@ -17,6 +17,12 @@ export type TGetProgressRequest = {
     book_id: number;
 }
 
+export type TUpdateProgressRequest = {
+    book_id: number;
+    book_page_id: number;
+    sentence_number: number;
+}
+
 export type TStartBookReadingRequest = {
     book_id: number;
 }

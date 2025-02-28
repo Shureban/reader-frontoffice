@@ -48,13 +48,13 @@ const Controls: React.FC<IProps> = (props) => {
                 </div>
                 <div className='center-controls'>
                     <div className='btn btn_60 btn_gray scroll-back' onClick={props.onClickScrollBack}>
-                        <RedoOutlined />
+                        <UndoOutlined />
                     </div>
                     <div className={'btn btn_60 btn_gray play-button ' + (isPlaying ? 'hidden' : '')} onClick={onClickPlayButton}>
                         <PlayCircleOutlined />
                     </div>
                     <div className='btn btn_60 btn_gray scroll-forward' onClick={props.onClickScrollForward}>
-                        <UndoOutlined />
+                        <RedoOutlined />
                     </div>
                 </div>
             </div>

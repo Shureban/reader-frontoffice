@@ -11,25 +11,25 @@ interface IProps {
 
 const Reader: React.FC<IProps> = (props) => {
     const [currentWordIndex, setCurrentWordIndex] = React.useState(0);
-    const words                                   = props.sentence.split(' ');
 
     React.useEffect(() => {
         if (!props.isPlaying) {
             return;
         }
 
+        const words    = props.sentence.split(' ');
         const interval = setInterval(() => {
-            setCurrentWordIndex((prev) => {
-                if (prev + 1 >= words.length) {
+            setCurrentWordIndex((prevIndex) => {
+                if (prevIndex + 1 >= words.length) {
                     props.onSentenceEnd();
                     return 0;
                 }
-                return prev + 1;
+                return prevIndex + 1;
             });
-        }, 10000);
+        }, 60000 / props.wordsPerMinute);
 
         return () => clearInterval(interval);
-    }, [props.isPlaying, words.length]);
+    }, [props.isPlaying, props.sentence]);
 
     return (
         <div className={'reader'}>

@@ -10,18 +10,19 @@ import {CabinetRoutes} from "routes/cabinet";
 import PageResource from "api/resources/page";
 import {ListRequestSortColumn, TBooksPagesListRequest} from "api/requests/book-pages";
 import {SortType} from "api/enums/sort-type";
+import {TUpdateProgressRequest} from "api/requests/users-books";
 
-const WordsPerMinute = 10;
+const WordsPerMinute = 600;
 
 const BookReading: React.FC = observer(() => {
-    const {appStore}                            = useRootStore();
-    const navigate                              = useNavigate();
-    const {uuid}                                = useParams() || '';
-    const [bookProgress, setBookProgress]       = useState<BookProgressResource | undefined>();
-    const [pagesList, setPagesList]             = useState<PageResource[]>([]);
-    const [currentPage, setCurrentPage]         = useState<PageResource | undefined>();
-    const [currentSentence, setCurrentSentence] = useState<string>("");
-    const [isPlaying, setIsPlaying]             = useState<boolean>(false);
+    const {appStore}                                      = useRootStore();
+    const navigate                                        = useNavigate();
+    const {uuid}                                          = useParams() || '';
+    const [bookProgress, setBookProgress]                 = useState<BookProgressResource | undefined>();
+    const [pagesList, setPagesList]                       = useState<PageResource[]>([]);
+    const [currentPage, setCurrentPage]                   = useState<PageResource | undefined>();
+    const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
+    const [isPlaying, setIsPlaying]                       = useState<boolean>(false);
 
     useEffect(() => {
         Promise.resolve()
@@ -30,7 +31,7 @@ const BookReading: React.FC = observer(() => {
             .then((bookProgress) => Promise.resolve()
                 .then(() => setBookProgress(bookProgress))
                 .then(() => setCurrentPage(bookProgress.page))
-                .then(() => setCurrentSentence(bookProgress.page.sentences[0]))
+                .then(() => setCurrentSentenceIndex(bookProgress.sentence_number))
                 .then(() => BookPagesApi.list(
                     bookProgress.book.author.url_slug,
                     bookProgress.book.url_slug,
@@ -41,21 +42,49 @@ const BookReading: React.FC = observer(() => {
             .finally(() => appStore.unlockPage());
     }, []);
 
-    const onClickCloseButton   = () => {
-        navigate(CabinetRoutes.bookPreview(bookProgress?.book.author.url_slug, bookProgress?.book.url_slug));
+    const updateProgress = (page: PageResource, sentenceIndex: number) => Promise.resolve()
+        .then(() => ({book_id: bookProgress?.book.id, book_page_id: page?.id, sentence_number: sentenceIndex}))
+        .then((request: TUpdateProgressRequest) => UsersBooksApi.updateBookProgress(request))
+        .catch((error) => console.log(error));
+
+    const forcePrevSentence = () => {
+        let newIndex = currentSentenceIndex - 1;
+        let page     = currentPage;
+
+        if (newIndex < 0) {
+            page     = pagesList.find((page) => page.number === currentPage?.number - 1);
+            newIndex = page?.sentences.length - 1;
+        }
+
+        if (page) {
+            setCurrentPage(page);
+            setCurrentSentenceIndex(newIndex);
+            updateProgress(page, newIndex);
+        }
     }
-    const onClickPlayButton    = () => {
-        setIsPlaying(true);
+
+    const forceNextSentence = () => {
+        let newIndex = currentSentenceIndex + 1;
+        let page     = currentPage;
+
+        if (newIndex >= currentPage?.sentences.length) {
+            page     = pagesList.find((page) => page.number === currentPage?.number + 1);
+            newIndex = 0;
+        }
+
+        if (page) {
+            setCurrentPage(page);
+            setCurrentSentenceIndex(newIndex);
+            updateProgress(page, newIndex);
+        }
     }
-    const onClickPauseButton   = () => {
-        setIsPlaying(false);
-    }
-    const onClickScrollBack    = () => {
-        console.log('scroll-back');
-    }
-    const onClickScrollForward = () => {
-        console.log('scroll-forward');
-    }
+
+    const onClickCloseButton   = () => navigate(CabinetRoutes.bookPreview(bookProgress?.book.author.url_slug, bookProgress?.book.url_slug))
+    const onClickPlayButton    = () => setIsPlaying(true)
+    const onClickPauseButton   = () => setIsPlaying(false)
+    const onClickScrollBack    = () => forcePrevSentence();
+    const onClickScrollForward = () => forceNextSentence();
+    const onSentenceEnd        = () => forceNextSentence();
 
     return (<>
         <ControlsOverlay
@@ -70,8 +99,8 @@ const BookReading: React.FC = observer(() => {
             fontSize={4}
             wordsPerMinute={WordsPerMinute}
             isPlaying={isPlaying}
-            sentence={currentSentence}
-            onSentenceEnd={() => console.log('onSentenceEnd')}
+            sentence={currentPage?.sentences[currentSentenceIndex] || ''}
+            onSentenceEnd={() => onSentenceEnd()}
         />
     </>);
 });

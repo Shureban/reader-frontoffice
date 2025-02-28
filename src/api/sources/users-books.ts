@@ -1,6 +1,6 @@
 import {ApiRoute} from "api/routes";
 import Source from "api/sources/source";
-import {TBooksProgressListRequest, TGetProgressRequest, TStartBookReadingRequest} from "api/requests/users-books";
+import {TBooksProgressListRequest, TGetProgressRequest, TStartBookReadingRequest, TUpdateProgressRequest} from "api/requests/users-books";
 import {objectToQueryString} from "api/utils/query";
 import BookProgressResource, {TBookProgress} from "api/resources/book-progress";
 import {TBookProgressResponse, TBooksProgressListResponse} from "api/responses/users-books";
@@ -24,6 +24,11 @@ export default class UsersBooks extends Source {
 
     public async getBookProgress(request: TGetProgressRequest): Promise<BookProgressResource> {
         return this.client.get(ApiRoute.UsersBooksGetBookProgress + '?' + objectToQueryString(request))
+            .then((response: TBookProgressResponse) => new BookProgressResource(response.data.data));
+    }
+
+    public async updateBookProgress(request: TUpdateProgressRequest): Promise<BookProgressResource> {
+        return this.client.put(ApiRoute.UsersBooksUpdateProgress, request)
             .then((response: TBookProgressResponse) => new BookProgressResource(response.data.data));
     }
 
