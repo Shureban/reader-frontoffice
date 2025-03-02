@@ -1,7 +1,11 @@
 import './styles.less';
 import React, {useEffect, useState} from "react";
+import {ReadingMode} from "domains/cabinet/pages/book-reading/enums";
+import DefaultMode from "domains/cabinet/pages/book-reading/reader/default-mode";
+import TikTokMode from "domains/cabinet/pages/book-reading/reader/tiktok-mode";
 
 interface IProps {
+    readingMode: ReadingMode;
     fontSize: number;
     wordsPerMinute: number;
     isPlaying: boolean;
@@ -35,14 +39,16 @@ const Reader: React.FC<IProps> = (props) => {
         setCurrentWordIndex(0);
     }, [props.sentence]);
 
+    console.log(props.readingMode);
     return (
         <div className={'reader'}>
             <div className={'reader__content'} style={{fontSize: props.fontSize}}>
-                {props.sentence.split(' ').map((word, index) => {
-                    return index <= currentWordIndex
-                        ? <span key={index} dangerouslySetInnerHTML={{__html: word + "&nbsp;"}} />
-                        : <span key={index} dangerouslySetInnerHTML={{__html: word + '&nbsp;'}} style={{color: 'grey'}} />;
-                })}
+                {props.readingMode === ReadingMode.Default && (
+                    <DefaultMode sentence={props.sentence} currentWordIndex={currentWordIndex} />
+                )}
+                {props.readingMode === ReadingMode.Tiktok && (
+                    <TikTokMode sentence={props.sentence} currentWordIndex={currentWordIndex} />
+                )}
             </div>
         </div>
     );

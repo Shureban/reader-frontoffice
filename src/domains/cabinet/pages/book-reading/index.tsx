@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {observer} from "mobx-react";
 import {useRootStore} from "RootStoreContext";
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {BookPagesApi, UsersApi, UsersBooksApi} from "api/entrypoint";
 import BookProgressResource from "api/resources/book-progress";
 import ControlsOverlay from "domains/cabinet/pages/book-reading/controls-overlay";
@@ -12,9 +12,11 @@ import {ListRequestSortColumn, TBooksPagesListRequest} from "api/requests/book-p
 import {SortType} from "api/enums/sort-type";
 import {TUpdateProgressRequest} from "api/requests/users-books";
 import {TUpdateUserSettingsRequest} from "api/requests/users";
+import {ReadingMode} from "domains/cabinet/pages/book-reading/enums";
 
 const BookReading: React.FC = observer(() => {
     const {appStore}                                      = useRootStore();
+    const location                                        = useLocation();
     const navigate                                        = useNavigate();
     const {uuid}                                          = useParams() || '';
     const [bookProgress, setBookProgress]                 = useState<BookProgressResource | undefined>();
@@ -24,24 +26,40 @@ const BookReading: React.FC = observer(() => {
     const [isPlaying, setIsPlaying]                       = useState<boolean>(false);
     const [wordsPerMinute, setWordsPerMinute]             = useState<number>(appStore.getUser().settings.words_per_minute);
     const [fontSize, setFontSize]                         = useState<number>(appStore.getUser().settings.font_size);
+    const [readingMode, setReadingMode]                   = useState<ReadingMode>(ReadingMode.Default);
 
     useEffect(() => {
-        Promise.resolve()
-            .then(() => appStore.lockPage())
-            .then(() => UsersBooksApi.show(uuid))
-            .then((bookProgress) => Promise.resolve()
-                .then(() => setBookProgress(bookProgress))
-                .then(() => setCurrentPage(bookProgress.page))
-                .then(() => setCurrentSentenceIndex(bookProgress.sentence_number))
-                .then(() => BookPagesApi.list(
-                    bookProgress.book.author.url_slug,
-                    bookProgress.book.url_slug,
-                    {page: 1, per_page: 10000, sort_column: ListRequestSortColumn.Number, sort_type: SortType.Asc} as TBooksPagesListRequest)
-                )
-                .then((response) => setPagesList(response.data)))
-            .catch((error) => console.log(error))
-            .finally(() => appStore.unlockPage());
+        processBookProgress();
+        processReadingMode();
     }, []);
+
+    const processBookProgress = () => Promise.resolve()
+        .then(() => appStore.lockPage())
+        .then(() => UsersBooksApi.show(uuid))
+        .then((bookProgress) => Promise.resolve()
+            .then(() => setBookProgress(bookProgress))
+            .then(() => setCurrentPage(bookProgress.page))
+            .then(() => setCurrentSentenceIndex(bookProgress.sentence_number))
+            .then(() => BookPagesApi.list(
+                bookProgress.book.author.url_slug,
+                bookProgress.book.url_slug,
+                {page: 1, per_page: 10000, sort_column: ListRequestSortColumn.Number, sort_type: SortType.Asc} as TBooksPagesListRequest)
+            )
+            .then((response) => setPagesList(response.data)))
+        .catch((error) => console.log(error))
+        .finally(() => appStore.unlockPage());
+
+    const processReadingMode = () => {
+        const queryParams = new URLSearchParams(location.search);
+
+        switch (queryParams.get('mode')) {
+            case ReadingMode.Tiktok:
+                setReadingMode(ReadingMode.Tiktok);
+                break;
+            default:
+                setReadingMode(ReadingMode.Default);
+        }
+    };
 
     const updateProgress = (page: PageResource, sentenceIndex: number) => Promise.resolve()
         .then(() => ({book_id: bookProgress?.book.id, book_page_id: page?.id, sentence_number: sentenceIndex}))
@@ -121,6 +139,7 @@ const BookReading: React.FC = observer(() => {
             onChangeFontSize={(newFontSize) => updateUserSettings(wordsPerMinute, newFontSize)}
         />
         <Reader
+            readingMode={readingMode}
             fontSize={fontSize}
             wordsPerMinute={wordsPerMinute}
             isPlaying={isPlaying}
