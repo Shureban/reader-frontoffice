@@ -34,14 +34,11 @@ const Controls: React.FC<IProps> = (props) => {
         .then(() => setIsHiddenReadingControls(true))
         .then(() => props.onClickPauseButton());
 
-    const showReadingControls = () => {
-        Promise.resolve()
-            .then(() => console.log('click'))
-            .then(() => clearTimeout(timerHidingReadingControls))
-            .then(() => setIsHiddenReadingControls(false))
-            .then(() => setTimeout(() => setIsHiddenReadingControls(true), ThreeSeconds))
-            .then((timer) => setTimerHidingReadingControls(timer));
-    };
+    const showReadingControls = () => Promise.resolve()
+        .then(() => clearTimeout(timerHidingReadingControls))
+        .then(() => setIsHiddenReadingControls(false))
+        .then(() => setTimeout(() => setIsHiddenReadingControls(true), ThreeSeconds))
+        .then((timer) => setTimerHidingReadingControls(timer));
 
     const getPreparedTitle = (title: string) => {
         if (!title) {

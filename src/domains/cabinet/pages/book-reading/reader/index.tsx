@@ -1,5 +1,5 @@
 import './styles.less';
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 interface IProps {
     fontSize: number;
@@ -10,9 +10,9 @@ interface IProps {
 }
 
 const Reader: React.FC<IProps> = (props) => {
-    const [currentWordIndex, setCurrentWordIndex] = React.useState(0);
+    const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!props.isPlaying) {
             return;
         }
@@ -31,13 +31,17 @@ const Reader: React.FC<IProps> = (props) => {
         return () => clearInterval(interval);
     }, [props.isPlaying, props.sentence, props.wordsPerMinute]);
 
+    useEffect(() => {
+        setCurrentWordIndex(0);
+    }, [props.sentence]);
+
     return (
         <div className={'reader'}>
             <div className={'reader__content'} style={{fontSize: props.fontSize}}>
                 {props.sentence.split(' ').map((word, index) => {
                     return index <= currentWordIndex
-                        ? <span key={index}>{word}&nbsp;</span>
-                        : <span key={index} style={{color: 'grey'}}>{word}&nbsp;</span>;
+                        ? <span key={index} dangerouslySetInnerHTML={{__html: word + "&nbsp;"}} />
+                        : <span key={index} dangerouslySetInnerHTML={{__html: word + '&nbsp;'}} style={{color: 'grey'}} />;
                 })}
             </div>
         </div>
