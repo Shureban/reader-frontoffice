@@ -9,7 +9,8 @@ export default defineConfig({
         port: 3211
     },
     preview: {
-        allowedHosts: 'all',
+        port: 3211,
+        allowedHosts: ['beereader.online'],
     },
     css: {
         preprocessorOptions: {
