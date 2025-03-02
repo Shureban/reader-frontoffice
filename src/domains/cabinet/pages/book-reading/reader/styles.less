@@ -6,13 +6,25 @@
   &__content {
     overflow: hidden;
     position: absolute;
-    display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: calc(100% - 110px);
+    color: grey;
+
+    &__prev-sentance {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    &__current-sentance {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
 
   .tiktok-active-word {

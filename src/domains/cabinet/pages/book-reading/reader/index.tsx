@@ -9,6 +9,7 @@ interface IProps {
     fontSize: number;
     wordsPerMinute: number;
     isPlaying: boolean;
+    prevSentence?: string;
     sentence: string;
     onSentenceEnd: () => void;
 }
@@ -39,16 +40,20 @@ const Reader: React.FC<IProps> = (props) => {
         setCurrentWordIndex(0);
     }, [props.sentence]);
 
-    console.log(props.readingMode);
     return (
         <div className={'reader'}>
-            <div className={'reader__content'} style={{fontSize: props.fontSize}}>
-                {props.readingMode === ReadingMode.Default && (
-                    <DefaultMode sentence={props.sentence} currentWordIndex={currentWordIndex} />
-                )}
-                {props.readingMode === ReadingMode.Tiktok && (
-                    <TikTokMode sentence={props.sentence} currentWordIndex={currentWordIndex} />
-                )}
+            <div className='reader__content' style={{fontSize: props.fontSize}}>
+                <div className='reader__content__prev-sentance'>
+                    <DefaultMode sentence={props.prevSentence || ''} currentWordIndex={1000000} />
+                </div>
+                <div className='reader__content__current-sentance'>
+                    {props.readingMode === ReadingMode.Default && (
+                        <DefaultMode sentence={props.sentence} currentWordIndex={currentWordIndex} />
+                    )}
+                    {props.readingMode === ReadingMode.Tiktok && (
+                        <TikTokMode sentence={props.sentence} currentWordIndex={currentWordIndex} />
+                    )}
+                </div>
             </div>
         </div>
     );

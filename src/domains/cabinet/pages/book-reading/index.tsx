@@ -22,6 +22,7 @@ const BookReading: React.FC = observer(() => {
     const [bookProgress, setBookProgress]                 = useState<BookProgressResource | undefined>();
     const [pagesList, setPagesList]                       = useState<PageResource[]>([]);
     const [currentPage, setCurrentPage]                   = useState<PageResource | undefined>();
+    const [prevSentenceIndex, setPrevSentenceIndex]       = useState<number | null>(null);
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
     const [isPlaying, setIsPlaying]                       = useState<boolean>(false);
     const [wordsPerMinute, setWordsPerMinute]             = useState<number>(appStore.getUser().settings.words_per_minute);
@@ -77,22 +78,26 @@ const BookReading: React.FC = observer(() => {
 
         if (page) {
             setCurrentPage(page);
+            setPrevSentenceIndex(null);
             setCurrentSentenceIndex(newIndex);
             updateProgress(page, newIndex);
         }
     }
 
     const forceNextSentence = () => {
-        let newIndex = currentSentenceIndex + 1;
-        let page     = currentPage;
+        let prevIndex: number | null = currentSentenceIndex;
+        let newIndex                 = prevIndex + 1;
+        let page                     = currentPage;
 
         if (newIndex >= currentPage?.sentences.length) {
-            page     = pagesList.find((page) => page.number === currentPage?.number + 1);
-            newIndex = 0;
+            page      = pagesList.find((page) => page.number === currentPage?.number + 1);
+            newIndex  = 0;
+            prevIndex = null;
         }
 
         if (page) {
             setCurrentPage(page);
+            setPrevSentenceIndex(prevIndex);
             setCurrentSentenceIndex(newIndex);
             updateProgress(page, newIndex);
         }
@@ -143,6 +148,7 @@ const BookReading: React.FC = observer(() => {
             fontSize={fontSize}
             wordsPerMinute={wordsPerMinute}
             isPlaying={isPlaying}
+            prevSentence={prevSentenceIndex ? currentPage?.sentences[prevSentenceIndex] : ''}
             sentence={currentPage?.sentences[currentSentenceIndex] || ''}
             onSentenceEnd={() => onSentenceEnd()}
         />
