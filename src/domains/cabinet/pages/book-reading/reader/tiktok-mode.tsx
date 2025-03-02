@@ -9,8 +9,8 @@ const TikTokMode: React.FC<IProps> = (props) => {
     return (<>
         {props.sentence.split(' ').map((word, index) => {
             return index === props.currentWordIndex
-                ? <span key={index} dangerouslySetInnerHTML={{__html: word + "&nbsp;"}} className={'tiktok-active-word'} />
-                : <span key={index} dangerouslySetInnerHTML={{__html: word + '&nbsp;'}} style={{color: 'grey'}} />;
+                ? <><span key={index} className={'tiktok-active-word'}>{word}</span>&nbsp;</>
+                : <span key={index} style={{color: 'grey'}}>{word}&nbsp;</span>;
         })}
     </>);
 };
