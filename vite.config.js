@@ -8,6 +8,9 @@ export default defineConfig({
     server: {
         port: 3211
     },
+    preview: {
+        allowedHosts: 'all',
+    },
     css: {
         preprocessorOptions: {
             less: {
