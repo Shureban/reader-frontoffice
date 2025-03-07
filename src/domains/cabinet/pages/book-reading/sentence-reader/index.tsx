@@ -7,20 +7,15 @@ import DefaultSentence from "domains/cabinet/pages/book-reading/components/defau
 import BookReadingStore from "domains/cabinet/pages/book-reading/store";
 import {observer} from "mobx-react";
 
-interface IProps {
-    readingWordMode: ReadingWordMode;
-    wordsPerMinute: number;
-    prevSentence?: string;
-    sentence: string;
-    onSentenceEnd: () => void;
-}
-
 const DefaultWordIndex = -1;
 
-const SentenceReader: React.FC<IProps> = observer((props) => {
-    const store                                   = BookReadingStore.getInstance();
-    const [currentWordIndex, setCurrentWordIndex] = useState(DefaultWordIndex);
-    const [readingInterval, setReadingInterval]   = useState<number | null>(null);
+const SentenceReader: React.FC = observer(() => {
+    const store                                 = BookReadingStore.getInstance();
+    const [readingInterval, setReadingInterval] = useState<number | null>(null);
+
+    useEffect(() => {
+        return () => startReading();
+    }, []);
 
     useEffect(() => {
         store.isPlaying ? startReading() : stopReading();
@@ -29,29 +24,31 @@ const SentenceReader: React.FC<IProps> = observer((props) => {
     useEffect(() => {
         stopReading();
         startReading();
-    }, [props.wordsPerMinute]);
+    }, [store.wordsPerMinute]);
 
     useEffect(() => {
         stopReading();
-        setCurrentWordIndex(DefaultWordIndex);
-        startReading();
-    }, [props.sentence]);
+        store.setActiveWordIndex(DefaultWordIndex);
+        setTimeout(() => startReading(), 500);
+    }, [store.activeSentenceNumber]);
 
     const startReading = (): void => {
         if (!store.isPlaying) {
             return;
         }
 
-        const words    = props.sentence.split(' ');
         const interval = setInterval(() => {
-            setCurrentWordIndex((prevIndex) => {
-                if (prevIndex + 1 >= words.length) {
-                    props.onSentenceEnd();
-                    return 0;
-                }
-                return prevIndex + 1;
-            });
-        }, 60000 / props.wordsPerMinute);
+            const words         = store.getActiveSentence().split(' ');
+            const nextWordIndex = store.activeWordIndex + 1;
+
+            if (nextWordIndex >= words.length) {
+                store.forceNextSentence();
+                store.setActiveWordIndex(0);
+                return;
+            }
+
+            store.setActiveWordIndex(nextWordIndex);
+        }, 60000 / store.wordsPerMinute);
 
         setReadingInterval(interval);
     };
@@ -65,17 +62,17 @@ const SentenceReader: React.FC<IProps> = observer((props) => {
     return (
         <div className='sentence-reader'>
             <div className='sentence-reader__content'>
-                {props.prevSentence && (
+                {store.getPrevSentence() && (
                     <div className='sentence-reader__content__prev-sentance'>
-                        <DefaultSentence sentence={props.prevSentence || ''} wordColor='gray' />
+                        <DefaultSentence sentence={store.getPrevSentence()} wordColor='gray' />
                     </div>
                 )}
                 <div className='sentence-reader__content__current-sentance'>
-                    {props.readingWordMode === ReadingWordMode.Karaoke && (
-                        <KaraokeSentence sentence={props.sentence} currentWordIndex={currentWordIndex} />
+                    {store.readingWordMode === ReadingWordMode.Karaoke && (
+                        <KaraokeSentence sentence={store.getActiveSentence()} currentWordIndex={store.activeWordIndex} />
                     )}
-                    {props.readingWordMode === ReadingWordMode.Tiktok && (
-                        <TikTokSentence sentence={props.sentence} currentWordIndex={currentWordIndex} />
+                    {store.readingWordMode === ReadingWordMode.Tiktok && (
+                        <TikTokSentence sentence={store.getActiveSentence()} currentWordIndex={store.activeWordIndex} />
                     )}
                 </div>
             </div>

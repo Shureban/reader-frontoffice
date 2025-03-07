@@ -5,5 +5,5 @@ export enum ReadingWordMode {
 
 export enum ReadingTextMode {
     SingleSentence = 'single-sentence',
-    ScrollText     = 'scroll-text',
+    ScrollingText  = 'scrolling-text',
 }

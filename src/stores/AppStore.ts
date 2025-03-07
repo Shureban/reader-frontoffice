@@ -1,5 +1,6 @@
 import {action, makeObservable, observable} from "mobx";
 import UserResource from "api/resources/user";
+import UserSettingsResource from "api/resources/user-settings";
 
 class AppStore {
     isReady: boolean          = false;
@@ -19,6 +20,8 @@ class AppStore {
             user: observable,
             getUser: observable,
             setUser: action,
+
+            setUserSettings: action,
         });
     }
 
@@ -48,6 +51,10 @@ class AppStore {
 
     public setUser(user: UserResource) {
         this.user = user;
+    }
+
+    public setUserSettings(settings: UserSettingsResource) {
+        this.getUser().settings = settings;
     }
 }
 

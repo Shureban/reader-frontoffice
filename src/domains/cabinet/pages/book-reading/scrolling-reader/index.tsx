@@ -1,22 +1,16 @@
 import './styles.less';
 import React, {useEffect, useRef, useState} from 'react';
-import {ReadingWordMode} from "domains/cabinet/pages/book-reading/enums";
-import Sentence from "domains/cabinet/pages/book-reading/scroll-reader/sentence";
+import Sentence from "domains/cabinet/pages/book-reading/scrolling-reader/sentence";
 import BookReadingStore from "domains/cabinet/pages/book-reading/store";
 import {observer} from "mobx-react";
 
 interface IProps {
-    readingWordMode: ReadingWordMode;
-    wordsPerMinute: number;
-    title: string;
     sentences: string[];
-    activeSentenceIndex: number;
-    onSentenceEnd: () => void;
 }
 
 const DefaultWordIndex = 0;
 
-const ScrollingText: React.FC<IProps> = observer((props) => {
+const ScrollingReader: React.FC<IProps> = observer((props) => {
     const store = BookReadingStore.getInstance();
 
     const containerRef                          = useRef<HTMLDivElement | null>(null);
@@ -24,12 +18,16 @@ const ScrollingText: React.FC<IProps> = observer((props) => {
     const [readingInterval, setReadingInterval] = useState<number | null>(null);
 
     useEffect(() => {
+        return () => startReading();
+    }, []);
+
+    useEffect(() => {
         const activeWord = containerRef.current?.querySelector('.active-word');
 
         if (activeWord) {
             activeWord.scrollIntoView({behavior: 'smooth', block: 'center'});
         }
-    }, [store.activeSentenceIndex, activeWordIndex]);
+    }, [store.activeSentenceNumber, activeWordIndex]);
 
     useEffect(() => {
         store.isPlaying ? startReading() : stopReading();
@@ -38,7 +36,7 @@ const ScrollingText: React.FC<IProps> = observer((props) => {
     useEffect(() => {
         stopReading();
         startReading();
-    }, [props.wordsPerMinute]);
+    }, [store.wordsPerMinute]);
 
     useEffect(() => {
         stopReading();
@@ -51,7 +49,7 @@ const ScrollingText: React.FC<IProps> = observer((props) => {
             return;
         }
 
-        const activeSentence = props.sentences[store.activeSentenceIndex] || '';
+        const activeSentence = props.sentences[store.activeSentenceNumber] || '';
         const words          = activeSentence.split(' ');
         const interval       = setInterval(() => {
             setActiveWordIndex((prevIndex) => {
@@ -59,20 +57,18 @@ const ScrollingText: React.FC<IProps> = observer((props) => {
 
                 if (newIndex >= words.length) {
                     stopReading();
-                    props.onSentenceEnd();
+                    store.forceNextSentence();
                     return 0;
                 }
                 return newIndex;
             });
-        }, 60000 / props.wordsPerMinute);
+        }, 60000 / store.wordsPerMinute);
 
         setReadingInterval(interval);
     };
 
     const stopReading = (): void => {
-        console.log('stopReading 1');
         if (readingInterval) {
-            console.log('stopReading 2');
             clearInterval(readingInterval);
         }
     };
@@ -81,16 +77,14 @@ const ScrollingText: React.FC<IProps> = observer((props) => {
         <div className="scroll-reader" ref={containerRef}>
             <div className="scroll-reader__content">
                 <div className='page-gap'></div>
-                <div className='scroll-reader__content__title'>{props.title}</div>
+                <div className='scroll-reader__content__title'>{store.pageTitle}</div>
 
                 {props.sentences.map((sentence, i) => {
                     return (
                         <div className='scroll-reader__content__sentence' key={i}>
                             <Sentence
                                 sentence={sentence}
-                                readingWordMode={props.readingWordMode}
                                 pageSentenceIndex={i}
-                                activeSentenceIndex={props.activeSentenceIndex}
                                 activeWordIndex={activeWordIndex}
                             />
                         </div>
@@ -101,4 +95,4 @@ const ScrollingText: React.FC<IProps> = observer((props) => {
     );
 });
 
-export default ScrollingText;
+export default ScrollingReader;
