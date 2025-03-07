@@ -10,7 +10,7 @@ class BookReadingStore {
     private static instance: BookReadingStore;
 
     public readingWordMode: ReadingWordMode          = ReadingWordMode.Karaoke;
-    public readingTextMode: ReadingTextMode          = ReadingTextMode.SingleSentence;
+    public readingTextMode: ReadingTextMode          = ReadingTextMode.ScrollingText;
     public fontSize: number                          = DefaultFontSize;
     public wordsPerMinute: number                    = DefaultWordsPerMinute;
     public pageTitle: string                         = '';

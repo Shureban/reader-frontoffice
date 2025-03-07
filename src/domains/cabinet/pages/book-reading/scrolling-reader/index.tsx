@@ -4,21 +4,15 @@ import Sentence from "domains/cabinet/pages/book-reading/scrolling-reader/senten
 import BookReadingStore from "domains/cabinet/pages/book-reading/store";
 import {observer} from "mobx-react";
 
-interface IProps {
-    sentences: string[];
-}
-
 const DefaultWordIndex = 0;
 
-const ScrollingReader: React.FC<IProps> = observer((props) => {
-    const store = BookReadingStore.getInstance();
-
+const ScrollingReader: React.FC = observer(() => {
+    const store                                 = BookReadingStore.getInstance();
     const containerRef                          = useRef<HTMLDivElement | null>(null);
-    const [activeWordIndex, setActiveWordIndex] = useState(DefaultWordIndex);
     const [readingInterval, setReadingInterval] = useState<number | null>(null);
 
     useEffect(() => {
-        return () => startReading();
+        return () => stopReading();
     }, []);
 
     useEffect(() => {
@@ -27,7 +21,7 @@ const ScrollingReader: React.FC<IProps> = observer((props) => {
         if (activeWord) {
             activeWord.scrollIntoView({behavior: 'smooth', block: 'center'});
         }
-    }, [store.activeSentenceNumber, activeWordIndex]);
+    }, [store.activeSentenceNumber, store.activeWordIndex]);
 
     useEffect(() => {
         store.isPlaying ? startReading() : stopReading();
@@ -40,28 +34,26 @@ const ScrollingReader: React.FC<IProps> = observer((props) => {
 
     useEffect(() => {
         stopReading();
-        setActiveWordIndex(DefaultWordIndex);
+        store.setActiveWordIndex(DefaultWordIndex);
         startReading();
-    }, [props.sentences]);
+    }, [store.currentPage]);
 
     const startReading = (): void => {
         if (!store.isPlaying) {
             return;
         }
 
-        const activeSentence = props.sentences[store.activeSentenceNumber] || '';
-        const words          = activeSentence.split(' ');
-        const interval       = setInterval(() => {
-            setActiveWordIndex((prevIndex) => {
-                const newIndex = prevIndex + 1;
+        const interval = setInterval(() => {
+            const words         = store.getActiveSentence().split(' ');
+            const nextWordIndex = store.activeWordIndex + 1;
 
-                if (newIndex >= words.length) {
-                    stopReading();
-                    store.forceNextSentence();
-                    return 0;
-                }
-                return newIndex;
-            });
+            if (nextWordIndex >= words.length) {
+                store.forceNextSentence();
+                store.setActiveWordIndex(DefaultWordIndex);
+                return;
+            }
+
+            store.setActiveWordIndex(nextWordIndex);
         }, 60000 / store.wordsPerMinute);
 
         setReadingInterval(interval);
@@ -79,17 +71,18 @@ const ScrollingReader: React.FC<IProps> = observer((props) => {
                 <div className='page-gap'></div>
                 <div className='scroll-reader__content__title'>{store.pageTitle}</div>
 
-                {props.sentences.map((sentence, i) => {
+                {store.currentPage?.sentences.map((sentence, i) => {
                     return (
                         <div className='scroll-reader__content__sentence' key={i}>
                             <Sentence
-                                sentence={sentence}
                                 pageSentenceIndex={i}
-                                activeWordIndex={activeWordIndex}
+                                sentence={sentence}
+                                activeWordIndex={store.activeWordIndex}
                             />
                         </div>
                     );
                 })}
+                <div className='page-gap'></div>
             </div>
         </div>
     );

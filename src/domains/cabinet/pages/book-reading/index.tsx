@@ -70,9 +70,7 @@ const BookReading: React.FC = observer(() => {
                 <SentenceReader />
             )}
             {store.readingTextMode === ReadingTextMode.ScrollingText && (
-                <ScrollingReader
-                    sentences={store.getCurrentPage().sentences || []}
-                />
+                <ScrollingReader />
             )}
         </div>
     </>);

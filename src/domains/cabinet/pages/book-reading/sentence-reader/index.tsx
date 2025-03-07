@@ -14,7 +14,7 @@ const SentenceReader: React.FC = observer(() => {
     const [readingInterval, setReadingInterval] = useState<number | null>(null);
 
     useEffect(() => {
-        return () => startReading();
+        return () => stopReading();
     }, []);
 
     useEffect(() => {
@@ -43,7 +43,7 @@ const SentenceReader: React.FC = observer(() => {
 
             if (nextWordIndex >= words.length) {
                 store.forceNextSentence();
-                store.setActiveWordIndex(0);
+                store.setActiveWordIndex(DefaultWordIndex);
                 return;
             }
 
