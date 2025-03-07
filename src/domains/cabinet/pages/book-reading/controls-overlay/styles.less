@@ -25,20 +25,7 @@
     position: absolute;
     width: 100%;
     height: 100vh;
-    background-color: transparent;
     z-index: 400;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #e2e2e2;
-      opacity: 0.95;
-      z-index: -1; /* Ensure the background is behind the content */
-    }
   }
 
   .top-controls {
@@ -113,11 +100,11 @@
     }
   }
 
-  .scroll-back {
+  .scroll-back > span {
     transform: rotate(100deg);
   }
 
-  .scroll-forward {
+  .scroll-forward > span {
     transform: rotate(-100deg);
   }
 }

@@ -1,9 +1,10 @@
 import './styles.less';
 import React, {useState} from "react";
 import {CloseOutlined, MinusOutlined, PauseOutlined, PlayCircleOutlined, PlusOutlined, RedoOutlined, UndoOutlined} from '@ant-design/icons';
+import {observer} from "mobx-react";
+import BookReadingStore from "domains/cabinet/pages/book-reading/store";
 
 interface IProps {
-    isPlaying: boolean;
     pageTitle: string;
     wordsPerMinute: number;
     fontSize: number;
@@ -18,8 +19,8 @@ interface IProps {
 
 const ThreeSeconds = 3000;
 
-const Controls: React.FC<IProps> = (props) => {
-    const isPlaying                                                   = props.isPlaying;
+const Controls: React.FC<IProps> = observer((props) => {
+    const store                                                       = BookReadingStore.getInstance();
     const [isHiddenPausedControls, setIsHiddenPausedControls]         = useState<boolean>(false);
     const [isHiddenReadingControls, setIsHiddenReadingControls]       = useState<boolean>(true);
     const [timerHidingReadingControls, setTimerHidingReadingControls] = useState<number>(null);
@@ -62,7 +63,7 @@ const Controls: React.FC<IProps> = (props) => {
                     <div className='btn btn_60 btn_gray scroll-back' onClick={props.onClickScrollBack}>
                         <UndoOutlined />
                     </div>
-                    <div className={'btn btn_60 btn_gray play-button ' + (isPlaying ? 'hidden' : '')} onClick={onClickPlayButton}>
+                    <div className={'btn btn_60 btn_gray play-button ' + (store.isPlaying ? 'hidden' : '')} onClick={onClickPlayButton}>
                         <PlayCircleOutlined />
                     </div>
                     <div className='btn btn_60 btn_gray scroll-forward' onClick={props.onClickScrollForward}>
@@ -113,6 +114,6 @@ const Controls: React.FC<IProps> = (props) => {
             </div>
         </div>
     );
-};
+});
 
 export default Controls;

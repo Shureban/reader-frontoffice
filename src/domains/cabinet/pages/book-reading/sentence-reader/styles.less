@@ -1,8 +1,6 @@
 @import "../../../../../vars.less";
 
-.reader {
-  overflow: hidden;
-
+.sentence-reader {
   &__content {
     overflow: hidden;
     position: absolute;
@@ -13,22 +11,11 @@
     width: calc(100% - 110px);
 
     &__prev-sentance {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
       margin-bottom: 10px;
       color: grey;
     }
 
     &__current-sentance {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
     }
-  }
-
-  .tiktok-active-word {
-    background-color: black;
-    color: white;
   }
 }
