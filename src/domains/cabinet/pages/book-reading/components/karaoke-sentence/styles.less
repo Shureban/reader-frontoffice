@@ -4,7 +4,16 @@
   color: black;
   display: flex;
   flex-wrap: wrap;
+  text-align: justify;
 
+  &::after {
+    content: '';
+    flex-grow: 1;
+  }
+
+  .paragraph {
+    width: 20px;
+  }
 
   .next-word {
     color: gray;

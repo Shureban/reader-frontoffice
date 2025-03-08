@@ -15,16 +15,38 @@ const Sentence: React.FC<IProps> = observer(({sentence, pageSentenceIndex}) => {
     const store               = BookReadingStore.getInstance();
     const activeSentenceIndex = store.activeSentenceNumber;
     const activeWordIndex     = store.activeWordIndex;
+    const sentenceLen         = sentence.split(' ').length;
+    const isLongSentence      = sentenceLen > 10;
+    const justifyContent      = sentenceLen > 10 ? 'stretch' : 'flex-start';
 
     switch (true) {
         case pageSentenceIndex < activeSentenceIndex:
-            return <DefaultSentence wordColor={'black'} sentence={sentence} justifyContent={'flex-start'} />
+            return <DefaultSentence
+                wordColor={'black'}
+                sentence={sentence}
+                justifyContent={justifyContent}
+                needParagraph={isLongSentence}
+            />
         case pageSentenceIndex === activeSentenceIndex:
             return store.readingWordMode === ReadingWordMode.Karaoke
-                ? <KaraokeSentence sentence={sentence} currentWordIndex={activeWordIndex} justifyContent={'flex-start'} />
-                : <TiktokSentence sentence={sentence} currentWordIndex={activeWordIndex} justifyContent={'flex-start'} />;
+                ? <KaraokeSentence
+                    sentence={sentence}
+                    currentWordIndex={activeWordIndex}
+                    justifyContent={justifyContent}
+                    needParagraph={isLongSentence}
+                />
+                : <TiktokSentence
+                    sentence={sentence}
+                    currentWordIndex={activeWordIndex}
+                    justifyContent={justifyContent}
+                />;
         case pageSentenceIndex > activeSentenceIndex:
-            return <DefaultSentence wordColor={'gray'} sentence={sentence} justifyContent={'flex-start'} />
+            return <DefaultSentence
+                wordColor={'gray'}
+                sentence={sentence}
+                justifyContent={justifyContent}
+                needParagraph={isLongSentence}
+            />
     }
 });
 
