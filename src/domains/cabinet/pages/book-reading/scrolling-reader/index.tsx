@@ -68,7 +68,7 @@ const ScrollingReader: React.FC = observer(() => {
     return (
         <div className="scroll-reader" ref={containerRef}>
             <div className="scroll-reader__content">
-                <div className='page-gap'></div>
+                <div className='page-gap page-gap_30'></div>
                 <div className='scroll-reader__content__title'>{store.pageTitle}</div>
 
                 {store.currentPage?.sentences.map((sentence, i) => {
@@ -77,12 +77,11 @@ const ScrollingReader: React.FC = observer(() => {
                             <Sentence
                                 pageSentenceIndex={i}
                                 sentence={sentence}
-                                activeWordIndex={store.activeWordIndex}
                             />
                         </div>
                     );
                 })}
-                <div className='page-gap'></div>
+                <div className='page-gap page-gap_50'></div>
             </div>
         </div>
     );

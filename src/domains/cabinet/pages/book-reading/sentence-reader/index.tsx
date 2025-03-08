@@ -64,15 +64,15 @@ const SentenceReader: React.FC = observer(() => {
             <div className='sentence-reader__content'>
                 {store.getPrevSentence() && (
                     <div className='sentence-reader__content__prev-sentance'>
-                        <DefaultSentence sentence={store.getPrevSentence()} wordColor='gray' />
+                        <DefaultSentence sentence={store.getPrevSentence()} wordColor='gray' justifyContent={'center'} />
                     </div>
                 )}
                 <div className='sentence-reader__content__current-sentance'>
                     {store.readingWordMode === ReadingWordMode.Karaoke && (
-                        <KaraokeSentence sentence={store.getActiveSentence()} currentWordIndex={store.activeWordIndex} />
+                        <KaraokeSentence sentence={store.getActiveSentence()} currentWordIndex={store.activeWordIndex} justifyContent={'center'} />
                     )}
                     {store.readingWordMode === ReadingWordMode.Tiktok && (
-                        <TikTokSentence sentence={store.getActiveSentence()} currentWordIndex={store.activeWordIndex} />
+                        <TikTokSentence sentence={store.getActiveSentence()} currentWordIndex={store.activeWordIndex} justifyContent={'center'} />
                     )}
                 </div>
             </div>

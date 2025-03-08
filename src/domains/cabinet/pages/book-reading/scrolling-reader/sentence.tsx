@@ -9,22 +9,22 @@ import BookReadingStore from "domains/cabinet/pages/book-reading/store";
 interface IProps {
     sentence: string;
     pageSentenceIndex: number;
-    activeWordIndex: number;
 }
 
-const Sentence: React.FC<IProps> = observer(({sentence, pageSentenceIndex, activeWordIndex}) => {
+const Sentence: React.FC<IProps> = observer(({sentence, pageSentenceIndex}) => {
     const store               = BookReadingStore.getInstance();
     const activeSentenceIndex = store.activeSentenceNumber;
+    const activeWordIndex     = store.activeWordIndex;
 
     switch (true) {
         case pageSentenceIndex < activeSentenceIndex:
-            return <DefaultSentence wordColor={'black'} sentence={sentence} />
+            return <DefaultSentence wordColor={'black'} sentence={sentence} justifyContent={'flex-start'} />
         case pageSentenceIndex === activeSentenceIndex:
             return store.readingWordMode === ReadingWordMode.Karaoke
-                ? <KaraokeSentence sentence={sentence} currentWordIndex={activeWordIndex} />
-                : <TiktokSentence sentence={sentence} currentWordIndex={activeWordIndex} />;
+                ? <KaraokeSentence sentence={sentence} currentWordIndex={activeWordIndex} justifyContent={'flex-start'} />
+                : <TiktokSentence sentence={sentence} currentWordIndex={activeWordIndex} justifyContent={'flex-start'} />;
         case pageSentenceIndex > activeSentenceIndex:
-            return <DefaultSentence wordColor={'gray'} sentence={sentence} />
+            return <DefaultSentence wordColor={'gray'} sentence={sentence} justifyContent={'flex-start'} />
     }
 });
 

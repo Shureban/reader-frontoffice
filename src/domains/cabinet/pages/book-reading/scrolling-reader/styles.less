@@ -13,18 +13,25 @@
     width: calc(100% - 110px);
 
     .page-gap {
-      height: 30%;
+      &_30 {
+        height: 30%;
+      }
+
+      &_50 {
+        height: 50%;
+      }
     }
 
     &__title {
       text-align: center;
       padding-top: 20px;
+      padding-bottom: 20px;
       font-size: 34px;
       color: black;
     }
 
     &__sentence {
-      text-align: left;
+      margin-bottom: 10px;
     }
   }
 }
