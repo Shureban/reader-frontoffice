@@ -4,13 +4,12 @@ import React from "react";
 interface IProps {
     sentence: string;
     currentWordIndex: number;
-    justifyContent: 'center' | 'flex-start' | 'flex-end' | 'space-between' | 'stretch';
     needParagraph?: boolean;
 }
 
 const TikTokSentence: React.FC<IProps> = (props) => {
     return (
-        <div className='tiktok-sentence' style={{justifyContent: props.justifyContent}}>
+        <div className='tiktok-sentence'>
             {props.needParagraph && (
                 <span className='paragraph' />
             )}

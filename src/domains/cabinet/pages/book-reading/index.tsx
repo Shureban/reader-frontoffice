@@ -1,4 +1,3 @@
-import './styles.less';
 import React, {useEffect} from "react";
 import {observer} from "mobx-react";
 import {useRootStore} from "RootStoreContext";
@@ -9,8 +8,6 @@ import {ListRequestSortColumn, TBooksPagesListRequest} from "api/requests/book-p
 import {SortType} from "api/enums/sort-type";
 import {TUpdateProgressRequest} from "api/requests/users-books";
 import {TUpdateUserSettingsRequest} from "api/requests/users";
-import {ReadingTextMode} from "domains/cabinet/pages/book-reading/enums";
-import SentenceReader from "domains/cabinet/pages/book-reading/sentence-reader";
 import ScrollingReader from "domains/cabinet/pages/book-reading/scrolling-reader";
 import BookReadingStore from "domains/cabinet/pages/book-reading/store";
 
@@ -65,14 +62,7 @@ const BookReading: React.FC = observer(() => {
 
     return (<>
         <ControlsOverlay />
-        <div className={'reader ' + (!store.isPlaying ? 'reader_paused' : '')} style={{fontSize: store.fontSize}}>
-            {store.readingTextMode === ReadingTextMode.SingleSentence && (
-                <SentenceReader />
-            )}
-            {store.readingTextMode === ReadingTextMode.ScrollingText && (
-                <ScrollingReader />
-            )}
-        </div>
+        <ScrollingReader />
     </>);
 });
 

@@ -1,7 +1,7 @@
 import {action, makeObservable, observable} from "mobx";
 import BookProgressResource from "api/resources/book-progress";
 import PageResource from "api/resources/page";
-import {ReadingTextMode, ReadingWordMode} from "domains/cabinet/pages/book-reading/enums";
+import {ReadingWordMode} from "domains/cabinet/pages/book-reading/enums";
 
 const DefaultFontSize       = 24;
 const DefaultWordsPerMinute = 150;
@@ -10,7 +10,6 @@ class BookReadingStore {
     private static instance: BookReadingStore;
 
     public readingWordMode: ReadingWordMode          = ReadingWordMode.Karaoke;
-    public readingTextMode: ReadingTextMode          = ReadingTextMode.ScrollingText;
     public fontSize: number                          = DefaultFontSize;
     public wordsPerMinute: number                    = DefaultWordsPerMinute;
     public pageTitle: string                         = '';
@@ -28,9 +27,6 @@ class BookReadingStore {
 
             readingWordMode: observable,
             setReadingWordMode: action,
-
-            readingTextMode: observable,
-            setReadingTextMode: action,
 
             fontSize: observable,
             setFontSize: action,
@@ -83,10 +79,6 @@ class BookReadingStore {
 
     public setReadingWordMode(mode: ReadingWordMode): void {
         this.readingWordMode = mode;
-    }
-
-    public setReadingTextMode(mode: ReadingTextMode): void {
-        this.readingTextMode = mode;
     }
 
     public setFontSize(fontSize: number): void {
@@ -170,6 +162,7 @@ class BookReadingStore {
         if (page) {
             this.setCurrentPage(page);
             this.setActiveSentenceNumber(newNumber);
+            this.setActiveWordIndex(0);
         }
     }
 
@@ -185,6 +178,7 @@ class BookReadingStore {
         if (page) {
             this.setCurrentPage(page);
             this.setActiveSentenceNumber(newNumber);
+            this.setActiveWordIndex(0);
         }
     }
 }

@@ -15,37 +15,37 @@ const Sentence: React.FC<IProps> = observer(({sentence, pageSentenceIndex}) => {
     const store               = BookReadingStore.getInstance();
     const activeSentenceIndex = store.activeSentenceNumber;
     const activeWordIndex     = store.activeWordIndex;
-    const sentenceLen         = sentence.split(' ').length;
-    const isLongSentence      = sentenceLen > 10;
-    const justifyContent      = sentenceLen > 10 ? 'stretch' : 'flex-start';
+    const needParagraph       = (() => {
+        const sentenceLen    = sentence.split(' ').length;
+        const isLongSentence = sentenceLen > 10;
+        const startWithDelim = sentence.startsWith('—');
+
+        return isLongSentence && !startWithDelim;
+    })();
 
     switch (true) {
         case pageSentenceIndex < activeSentenceIndex:
             return <DefaultSentence
                 wordColor={'black'}
                 sentence={sentence}
-                justifyContent={justifyContent}
-                needParagraph={isLongSentence}
+                needParagraph={needParagraph}
             />
         case pageSentenceIndex === activeSentenceIndex:
             return store.readingWordMode === ReadingWordMode.Karaoke
                 ? <KaraokeSentence
                     sentence={sentence}
                     currentWordIndex={activeWordIndex}
-                    justifyContent={justifyContent}
-                    needParagraph={isLongSentence}
+                    needParagraph={needParagraph}
                 />
                 : <TiktokSentence
                     sentence={sentence}
                     currentWordIndex={activeWordIndex}
-                    justifyContent={justifyContent}
                 />;
         case pageSentenceIndex > activeSentenceIndex:
             return <DefaultSentence
                 wordColor={'gray'}
                 sentence={sentence}
-                justifyContent={justifyContent}
-                needParagraph={isLongSentence}
+                needParagraph={needParagraph}
             />
     }
 });

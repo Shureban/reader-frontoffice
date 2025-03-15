@@ -66,14 +66,14 @@ const ScrollingReader: React.FC = observer(() => {
     };
 
     return (
-        <div className="scroll-reader" ref={containerRef}>
-            <div className="scroll-reader__content">
+        <div className={'reader ' + (!store.isPlaying ? 'reader_paused' : '')} style={{fontSize: store.fontSize}} ref={containerRef}>
+            <div className="reader__content">
                 <div className='page-gap page-gap_30'></div>
-                <div className='scroll-reader__content__title'>{store.pageTitle}</div>
+                <div className='reader__content__title'>{store.pageTitle}</div>
 
                 {store.currentPage?.sentences.map((sentence, i) => {
                     return (
-                        <div className='scroll-reader__content__sentence' key={i}>
+                        <div className={`reader__content__sentence number_${i}`} key={i}>
                             <Sentence
                                 pageSentenceIndex={i}
                                 sentence={sentence}

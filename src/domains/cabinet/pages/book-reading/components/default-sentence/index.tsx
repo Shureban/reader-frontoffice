@@ -4,19 +4,16 @@ import React from "react";
 interface IProps {
     wordColor: string;
     sentence: string;
-    justifyContent: 'center' | 'flex-start' | 'flex-end' | 'space-between' | 'stretch';
     needParagraph?: boolean;
 }
 
 const DefaultSentence: React.FC<IProps> = (props) => {
     return (
-        <div className='default-sentence' style={{justifyContent: props.justifyContent}}>
+        <div className='default-sentence' style={{color: props.wordColor}}>
             {props.needParagraph && (
-                <span className='paragraph' />
+                <>&nbsp;&nbsp;&nbsp;&nbsp;</>
             )}
-            {props.sentence.split(' ').map((word, index) => (
-                <span key={index} style={{color: props.wordColor}}>{word}&nbsp;</span>
-            ))}
+            {props.sentence}
         </div>
     );
 };
