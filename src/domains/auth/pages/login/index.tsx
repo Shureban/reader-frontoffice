@@ -1,7 +1,6 @@
+import './styles.less';
 import React from 'react';
 import {Button, Checkbox, Form, Input, Typography} from 'antd';
-import {LockOutlined, MailOutlined} from '@ant-design/icons';
-import './styles.less';
 import {AuthRoutes} from "routes/auth";
 import {useRootStore} from "RootStoreContext";
 import {AuthApi} from "api/entrypoint";
@@ -10,6 +9,8 @@ import {observer} from "mobx-react";
 import Storage from "storage/Storage";
 import {CabinetRoutes} from "routes/cabinet";
 import {applyFormErrorResponse} from "utils/form";
+import BeeEmailIcon from "images/svg/BeeEmailIcon";
+import BeeSafeIcon from "images/svg/BeeSafeIcon";
 
 const {Text, Title, Link} = Typography;
 
@@ -36,7 +37,7 @@ const Login: React.FC = observer(() => {
                 <div className='header'>
                     <Title className='title'>Sign in</Title>
                     <Text className='subtitle'>
-                        Welcome in RBWord.com. Enter your email and password to sign in.
+                        Welcome to BeeReader. Enter your email and password to sign in.
                     </Text>
                 </div>
                 <Form
@@ -55,7 +56,7 @@ const Login: React.FC = observer(() => {
                         ]}
                     >
                         <Input
-                            prefix={<MailOutlined />}
+                            prefix={<BeeEmailIcon width={16} height={16} />}
                             placeholder="Email"
                             autoComplete="email"
                             autoFocus={true}
@@ -68,7 +69,7 @@ const Login: React.FC = observer(() => {
                         ]}
                     >
                         <Input.Password
-                            prefix={<LockOutlined />}
+                            prefix={<BeeSafeIcon width={16} height={16} />}
                             type="password"
                             placeholder="Password"
                             autoComplete="password"

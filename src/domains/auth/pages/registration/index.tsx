@@ -1,7 +1,6 @@
 import './styles.less';
 import React from 'react';
 import {Button, Form, Input, Typography} from 'antd';
-import {LockOutlined, MailOutlined} from '@ant-design/icons';
 import {AuthRoutes} from "routes/auth";
 import {useRootStore} from "RootStoreContext";
 import {AuthApi} from "api/entrypoint";
@@ -10,6 +9,8 @@ import {observer} from "mobx-react";
 import Storage from "storage/Storage";
 import {CabinetRoutes} from "routes/cabinet";
 import {applyFormErrorResponse} from "utils/form";
+import BeeEmailIcon from "images/svg/BeeEmailIcon";
+import BeeSafeIcon from "images/svg/BeeSafeIcon";
 
 const {Text, Title, Link} = Typography;
 
@@ -52,7 +53,7 @@ const Registration: React.FC = observer(() => {
                         ]}
                     >
                         <Input
-                            prefix={<MailOutlined />}
+                            prefix={<BeeEmailIcon width={16} height={16} />}
                             placeholder="Email"
                             autoComplete="email"
                             autoFocus={true}
@@ -65,7 +66,7 @@ const Registration: React.FC = observer(() => {
                         ]}
                     >
                         <Input.Password
-                            prefix={<LockOutlined />}
+                            prefix={<BeeSafeIcon width={16} height={16} />}
                             type="password"
                             placeholder="Password"
                             autoComplete="password"
@@ -78,7 +79,7 @@ const Registration: React.FC = observer(() => {
                         ]}
                     >
                         <Input.Password
-                            prefix={<LockOutlined />}
+                            prefix={<BeeSafeIcon width={16} height={16} />}
                             type="password"
                             placeholder="Password confirmation"
                             autoComplete="password"
