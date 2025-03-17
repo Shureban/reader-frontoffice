@@ -22,7 +22,6 @@ const Wrapper: React.FC = observer((props: IWrapperProps) => {
             )}
 
             <Header className='cabinet-header'>
-                <div className="logo" />
                 <Menu />
             </Header>
 

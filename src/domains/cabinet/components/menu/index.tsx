@@ -12,7 +12,9 @@ const Menu: React.FC = observer(() => {
     return (
         <div className='menu'>
             <div className='menu__left-section'>
-                <div className='menu__item' onClick={() => navigate(CabinetRoutes.home())}>Home</div>
+                <div className="home" onClick={() => navigate(CabinetRoutes.home())}>
+                    <img src='/home.png' alt='logo' />
+                </div>
             </div>
             <div className='menu__right-section'>
                 <div className='menu__item' onClick={() => navigate(AuthRoutes.logout())}>Logout</div>
