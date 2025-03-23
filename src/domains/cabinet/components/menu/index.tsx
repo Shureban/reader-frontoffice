@@ -13,7 +13,7 @@ const Menu: React.FC = observer(() => {
         <div className='menu'>
             <div className='menu__left-section'>
                 <div className="home" onClick={() => navigate(CabinetRoutes.home())}>
-                    <img src='/home.png' alt='logo' />
+                    <img src='/logo-with-text.png' alt='logo' />
                 </div>
             </div>
             <div className='menu__right-section'>

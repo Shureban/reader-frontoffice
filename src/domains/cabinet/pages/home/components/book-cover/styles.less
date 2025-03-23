@@ -1,18 +1,14 @@
 @import "../../../../../../vars.less";
 
 .book-cover {
-  display: inline-block;
-  margin-right: 10px;
-  width: 30vh;
-  height: calc((100vh - @menuHeight - 56px) / 2);
-  background-color: #d9d9d9;
-  background-size: cover;
-  background-position: center;
+  width: 130px;
+  height: 195px;
   overflow: hidden; /* Обрізає контент, що виходить за межі блоку */
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5); /* Овальна тінь */
 
   .ant-image {
-    width: 100%;
-    height: 100%;
+    width: 130px;
+    height: 200px;
     object-fit: cover; /* Зберігає пропорції зображення */
   }
 }

@@ -4,7 +4,6 @@ import {observer} from "mobx-react";
 import {useRootStore} from "RootStoreContext";
 import {BooksApi, UsersBooksApi} from "api/entrypoint";
 import {TBooksListRequest} from "api/requests/books";
-import {Col, Row} from "antd";
 import Wrapper from "domains/cabinet/components/wrapper";
 import BookCover from "domains/cabinet/pages/home/components/book-cover";
 import {SortType} from "api/enums/sort-type";
@@ -34,31 +33,33 @@ const Home: React.FC = observer(() => {
             .finally(() => appStore.unlockPage());
     }, []);
 
+    // return (
+    //     <Wrapper>
+    //         <Skeleton />
+    //     </Wrapper>
+    // );
+    if (appStore.pageIsLocked()) {
+    }
+
     return (
         <Wrapper>
-            {availableBooks.length > 0 && (
-                <Row className='mb-10'>
-                    <Col span={24}>
-                        <div className="scrollable-strip">
-                            {availableBooks.map((book, index) => (<div key={index}>
-                                <BookCover book={book} />
-                            </div>))}
-                        </div>
-                    </Col>
-                </Row>
-            )}
+            {availableBooks.length > 0 && (<>
+                <div className='m-20 fs-22'>Your collection</div>
+                <div className="scrollable-strip pl-20">
+                    {availableBooks.map((book, index) => (<div key={index}>
+                        <BookCover book={book} />
+                    </div>))}
+                </div>
+            </>)}
 
-            {booksInProgress.length > 0 && (
-                <Row>
-                    <Col span={24}>
-                        <div className="scrollable-strip">
-                            {booksInProgress.map((bookProgress, index) => (<div key={index}>
-                                <BookCover book={bookProgress.book} />
-                            </div>))}
-                        </div>
-                    </Col>
-                </Row>
-            )}
+            {booksInProgress.length > 0 && (<>
+                <div className='m-20 fs-22'>Books in progress</div>
+                <div className="scrollable-strip pl-20">
+                    {booksInProgress.map((bookProgress, index) => (<div key={index}>
+                        <BookCover book={bookProgress.book} />
+                    </div>))}
+                </div>
+            </>)}
         </Wrapper>
     );
 });
