@@ -15,10 +15,7 @@ const KaraokeSentence: React.FC<IProps> = (props) => {
 
     return (
         <>
-            <div className='karaoke-sentence'>
-                {props.needParagraph && (
-                    <>&nbsp;&nbsp;&nbsp;&nbsp;</>
-                )}
+            <div className={'karaoke-sentence ' + (props.needParagraph ? 'karaoke-sentence_paragraph' : '')}>
                 {firstPart && (
                     <span>{firstPart} </span>
                 )}

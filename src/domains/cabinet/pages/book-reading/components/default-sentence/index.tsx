@@ -9,10 +9,10 @@ interface IProps {
 
 const DefaultSentence: React.FC<IProps> = (props) => {
     return (
-        <div className='default-sentence' style={{color: props.wordColor}}>
-            {props.needParagraph && (
-                <>&nbsp;&nbsp;&nbsp;&nbsp;</>
-            )}
+        <div
+            className={'default-sentence ' + (props.needParagraph ? 'default-sentence_paragraph' : '')}
+            style={{color: props.wordColor}}
+        >
             {props.sentence}
         </div>
     );

@@ -1,6 +1,22 @@
 @import "../../../../vars.less";
 
 .book-info {
+  &__cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to top, #ebebeb, #ffffff);
+    height: 45vh;
+
+    div {
+      width: 25vh;
+      height: 36vh;
+      overflow: hidden; /* Обрізає контент, що виходить за межі блоку */
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5); /* Овальна тінь */
+      object-fit: cover; /* Зберігає пропорції зображення */
+    }
+  }
+
   &__short-info {
     text-align: center;
     margin-bottom: 10px;
@@ -17,6 +33,7 @@
     margin-top: 10px;
     margin-bottom: 50px;
     padding: 0 10px;
+    text-indent: 2em;
   }
 
   &__progress-action {

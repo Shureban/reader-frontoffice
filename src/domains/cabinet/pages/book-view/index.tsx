@@ -72,16 +72,17 @@ const BookView: React.FC = observer(() => {
     return (
         <Wrapper>
             <div className='book-info'>
+                <div className='book-info__cover'>
+                    <Image src={book.cover_file?.download_link} />
+                </div>
                 <div className='book-info__short-info'>
-                    <Title className='book-info__short-info__title'>{book.name}</Title>
+                    <Title level={2} className='book-info__short-info__title'>{book.name}</Title>
                     <Text className='book-info__short-info__subtitle'>
                         {book.author.name}
                     </Text>
                 </div>
-                <div className='book-info__cover'>
-                    <Image src={book.cover_file?.download_link} />
-                </div>
-                <div className='book-info__description'>{book.description}</div>
+                <hr />
+                <div className='book-info__description pl-20 pr-20'>{book.description}</div>
                 <div className='book-info__progress-action'>
                     {bookInProgress && (
                         <Button loading={buttonLoading ? {icon: <SyncOutlined spin />} : false} size={'large'} type={'primary'} block onClick={onClickContinueReading}>
