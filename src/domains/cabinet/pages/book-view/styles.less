@@ -39,6 +39,15 @@
     text-indent: 2em;
   }
 
+  &__progress {
+    display: flex;
+    justify-content: center;
+
+    .ant-progress-bg {
+      background-color: @brandYellowColor;
+    }
+  }
+
   &__progress-action {
     font-family: @brandFontFamily;
     position: fixed;
@@ -50,6 +59,10 @@
     .ant-btn {
       border-radius: 8px 8px 0 0;
     }
+  }
+
+  .divider {
+    border-top: 1px solid #c3c3c3;
   }
 }
 

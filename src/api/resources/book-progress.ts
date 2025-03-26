@@ -6,6 +6,7 @@ export type TBookProgress = {
     book: TBook;
     page: TPage;
     sentence_number: number;
+    progress: number;
 }
 
 export default class BookProgressResource implements TBookProgress {
@@ -13,11 +14,13 @@ export default class BookProgressResource implements TBookProgress {
     public book: TBook;
     public page: TPage;
     public sentence_number: number;
+    public progress: number;
 
     constructor(data: TBookProgress) {
         this.uuid            = data.uuid;
         this.book            = data.book;
         this.page            = data.page;
         this.sentence_number = data.sentence_number;
+        this.progress        = data.progress;
     }
 };

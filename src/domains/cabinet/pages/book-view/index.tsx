@@ -7,7 +7,7 @@ import BookResource from "api/resources/book";
 import {useRootStore} from "RootStoreContext";
 import {BooksApi, UsersBooksApi} from "api/entrypoint";
 import BookViewSkeleton from "domains/cabinet/pages/book-view/components/skeleton";
-import {Button, Image, Typography} from "antd";
+import {Button, Image, Progress, Typography} from "antd";
 import {TGetProgressRequest, TStartBookReadingRequest} from "api/requests/users-books";
 import {SyncOutlined} from '@ant-design/icons';
 import {CabinetRoutes} from "routes/cabinet";
@@ -81,7 +81,13 @@ const BookView: React.FC = observer(() => {
                         {book.author.name}
                     </Text>
                 </div>
-                <hr />
+                <Progress
+                    percent={bookProgress?.progress}
+                    className='book-info__progress'
+                    percentPosition={{align: 'center', type: 'inner'}}
+                    size={['80vw', 20]}
+                />
+                <hr className='divider' />
                 <div className='book-info__description pl-20 pr-20'>{book.description}</div>
                 <div className='book-info__progress-action'>
                     {bookInProgress && (
