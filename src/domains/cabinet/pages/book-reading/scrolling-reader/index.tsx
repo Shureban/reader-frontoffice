@@ -66,7 +66,7 @@ const ScrollingReader: React.FC = observer(() => {
     };
 
     return (
-        <div className={'reader ' + (!store.isPlaying ? 'reader_paused' : '')} style={{fontSize: store.fontSize}} ref={containerRef}>
+        <div className={'reader ' + (store.isOverlayVisible ? 'reader_paused' : '')} style={{fontSize: store.fontSize}} ref={containerRef}>
             <div className="reader__content">
                 <div className='page-gap page-gap_50'></div>
 

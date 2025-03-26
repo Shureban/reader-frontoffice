@@ -25,12 +25,14 @@ const Controls: React.FC = observer(() => {
     const onClickPlayButton = () => Promise.resolve()
         .then(() => setIsVisiblePausedControls(false))
         .then(() => toggleReadingControls())
-        .then(() => store.setIsPlaying(true));
+        .then(() => store.setIsPlaying(true))
+        .then(() => store.setIsOverlayVisible(false));
 
     const onClickPauseButton = () => Promise.resolve()
         .then(() => setIsVisiblePausedControls(true))
         .then(() => setIsVisibleReadingControls(false))
-        .then(() => store.setIsPlaying(false));
+        .then(() => store.setIsPlaying(false))
+        .then(() => store.setIsOverlayVisible(true));
 
     const toggleReadingControls = () => {
         if (isVisibleReadingControls) {

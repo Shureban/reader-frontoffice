@@ -24,7 +24,7 @@ const PausedOverlay: React.FC<IProps> = observer((props) => {
                 <div className='btn btn_60 btn_gray scroll-back' onClick={store.forcePrevSentence}>
                     <UndoOutlined />
                 </div>
-                <div className={'btn btn_60 btn_gray play-button ' + (store.isPlaying ? 'hidden' : '')} onClick={props.onClickPlayButton}>
+                <div className='btn btn_60 btn_gray play-button' onClick={props.onClickPlayButton}>
                     <PlayCircleOutlined />
                 </div>
                 <div className='btn btn_60 btn_gray scroll-forward' onClick={store.forceNextSentence}>

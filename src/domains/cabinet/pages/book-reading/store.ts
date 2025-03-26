@@ -14,6 +14,7 @@ class BookReadingStore {
     public wordsPerMinute: number                    = DefaultWordsPerMinute;
     public pageTitle: string                         = '';
     public isPlaying: boolean                        = false;
+    public isOverlayVisible: boolean                 = true;
     public activeSentenceNumber: number              = 0;
     public activeWordIndex: number                   = 0;
     public bookProgress: BookProgressResource | null = null;
@@ -24,6 +25,9 @@ class BookReadingStore {
         makeObservable(this, {
             isPlaying: observable,
             setIsPlaying: action,
+
+            isOverlayVisible: observable,
+            setIsOverlayVisible: action,
 
             readingWordMode: observable,
             setReadingWordMode: action,
@@ -75,6 +79,10 @@ class BookReadingStore {
 
     public setIsPlaying(status: boolean): void {
         this.isPlaying = status;
+    }
+
+    public setIsOverlayVisible(status: boolean): void {
+        this.isOverlayVisible = status;
     }
 
     public setReadingWordMode(mode: ReadingWordMode): void {

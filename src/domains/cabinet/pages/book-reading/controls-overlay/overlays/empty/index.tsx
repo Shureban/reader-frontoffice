@@ -17,7 +17,11 @@ const EmptyOverlay: React.FC<IProps> = observer((props) => {
     const [clicksNumber, setClicksNumber] = useState<number>(DefaultClicksNumber);
     const [clickTimer, setClickTimer]     = useState<number>(null);
 
-    const onClickDown = (event: React.TouchEvent) => setClickTime(Date.now());
+    const onClickDown = (event: React.TouchEvent) => {
+        setClickTime(Date.now());
+        store.setIsPlaying(false);
+        store.setIsOverlayVisible(false);
+    };
 
     const onClickUp = (event: React.TouchEvent) => {
         event.preventDefault();
@@ -30,15 +34,20 @@ const EmptyOverlay: React.FC<IProps> = observer((props) => {
 
         switch (true) {
             case isFastClick && newClicksNumber === ReadingMenuClickNumber:
-                handleOneClick();
+                handleSingleClick();
                 break;
             case isFastClick && newClicksNumber === ChangeSentenceClickNumber:
                 handleDoubleClick(event);
                 break;
+            default:
+                setClicksNumber(DefaultClicksNumber);
         }
+
+        store.setIsPlaying(true);
+        store.setIsOverlayVisible(false);
     };
 
-    const handleOneClick = () => {
+    const handleSingleClick = () => {
         const timer = setTimeout(() => Promise.resolve()
             .then(() => setClicksNumber(DefaultClicksNumber))
             .then(() => props.toggleReadingControls()), SlowClickDelay);
