@@ -18,8 +18,16 @@
     width: calc(100% - 110px);
 
     .page-gap {
+      display: flex;
+      justify-content: center;
+      align-items: end;
+
       &_30 {
         height: 30%;
+      }
+
+      &_40 {
+        height: 40%;
       }
 
       &_50 {
@@ -27,11 +35,8 @@
       }
     }
 
-    &__title {
+    &__page-number {
       text-align: center;
-      padding-top: 20px;
-      padding-bottom: 20px;
-      font-size: 34px;
       color: black;
     }
 

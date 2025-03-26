@@ -1,19 +1,20 @@
 import './styles.less';
 import React, {useState} from "react";
-import {CloseOutlined, MinusOutlined, PauseOutlined, PlayCircleOutlined, PlusOutlined, RedoOutlined, UndoOutlined} from '@ant-design/icons';
+import {CloseCircleOutlined, MinusOutlined, PauseCircleOutlined, PlayCircleOutlined, PlusOutlined, RedoOutlined, UndoOutlined} from '@ant-design/icons';
 import {observer} from "mobx-react";
 import BookReadingStore from "domains/cabinet/pages/book-reading/store";
 import {CabinetRoutes} from "routes/cabinet";
 import {useNavigate} from "react-router-dom";
 
-const ThreeSeconds = 3000;
+const ThreeSeconds = 300000;
 
 const Controls: React.FC = observer(() => {
     const store                                                       = BookReadingStore.getInstance();
     const navigate                                                    = useNavigate();
-    const [isHiddenPausedControls, setIsHiddenPausedControls]         = useState<boolean>(false);
-    const [isHiddenReadingControls, setIsHiddenReadingControls]       = useState<boolean>(true);
+    const [isVisiblePausedControls, setIsVisiblePausedControls]       = useState<boolean>(true);
+    const [isVisibleReadingControls, setIsVisibleReadingControls]     = useState<boolean>(false);
     const [timerHidingReadingControls, setTimerHidingReadingControls] = useState<number>(null);
+    const [clickDelay, setClickDelay]                                 = useState<number>(0);
 
     const onClickCloseButton = () => navigate(CabinetRoutes.bookPreview(
         store.getBookProgress().book.author.url_slug,
@@ -21,27 +22,53 @@ const Controls: React.FC = observer(() => {
     ));
 
     const onClickPlayButton = () => Promise.resolve()
-        .then(() => setIsHiddenPausedControls(true))
-        .then(() => showReadingControls())
+        .then(() => setIsVisiblePausedControls(false))
+        .then(() => toggleReadingControls())
         .then(() => store.setIsPlaying(true));
 
     const onClickPauseButton = () => Promise.resolve()
-        .then(() => setIsHiddenPausedControls(false))
-        .then(() => setIsHiddenReadingControls(true))
+        .then(() => setIsVisiblePausedControls(true))
+        .then(() => setIsVisibleReadingControls(false))
         .then(() => store.setIsPlaying(false));
 
-    const showReadingControls = () => Promise.resolve()
-        .then(() => clearTimeout(timerHidingReadingControls))
-        .then(() => setIsHiddenReadingControls(false))
-        .then(() => setTimeout(() => setIsHiddenReadingControls(true), ThreeSeconds))
-        .then((timer) => setTimerHidingReadingControls(timer));
+    const toggleReadingControls = () => {
+        if (isVisibleReadingControls) {
+            clearTimeout(timerHidingReadingControls);
+            setIsVisibleReadingControls(false);
+        } else {
+            Promise.resolve()
+                .then(() => setTimeout(() => setIsVisibleReadingControls(false), ThreeSeconds))
+                .then((timer) => setTimerHidingReadingControls(timer))
+                .then(() => setIsVisibleReadingControls(true));
+        }
+    };
+
+    const onClickDown = (event: React.MouseEvent) => {
+        console.log('down');
+        console.log(event);
+        event.preventDefault();
+        setClickDelay(Date.now());
+        store.setIsPlaying(false);
+        return false;
+    };
+
+    const onClickUp = (event: React.MouseEvent) => {
+        event.preventDefault();
+        console.log('up');
+        if (Date.now() - clickDelay < 200) {
+            toggleReadingControls();
+        }
+
+        store.setIsPlaying(true);
+    };
 
     return (
-        <div className={'controls-overlay'}>
-            <div className={'paused-controls ' + (isHiddenPausedControls ? 'hidden' : '')}>
+        <div className='controls-overlay'>
+            <div className={'controls-overlay controls-overlay__paused ' + (isVisiblePausedControls ? '' : 'hidden')}>
                 <div className='top-controls'>
-                    <div className='btn btn_30 btn_gray p-20' onClick={onClickCloseButton}>
-                        <CloseOutlined />
+                    <div></div>
+                    <div className='btn btn_25 btn_gray p-20' onClick={onClickCloseButton}>
+                        <CloseCircleOutlined />
                     </div>
                 </div>
                 <div className='center-controls center-controls_w-70'>
@@ -57,16 +84,11 @@ const Controls: React.FC = observer(() => {
                 </div>
             </div>
 
-            <div className={'reading-controls ' + (isHiddenReadingControls ? 'hidden' : '')} onClick={() => showReadingControls()}>
+            <div className={'controls-overlay controls-overlay__reading ' + (isVisibleReadingControls ? '' : 'hidden')} onClick={() => toggleReadingControls()}>
                 <div className='top-controls'>
-                    <div className='btn btn_30 btn_gray p-20' onClick={onClickCloseButton}>
-                        <CloseOutlined />
-                    </div>
-                    <div className={'title'}>
-                        {store.pageTitle}
-                    </div>
-                    <div className='btn btn_30 btn_gray p-20' onClick={onClickPauseButton}>
-                        <PauseOutlined />
+                    <div></div>
+                    <div className='btn btn_25 btn_gray p-20' onClick={onClickPauseButton}>
+                        <PauseCircleOutlined />
                     </div>
                 </div>
                 <div className='center-controls center-controls_w-100'>
@@ -95,7 +117,17 @@ const Controls: React.FC = observer(() => {
                 </div>
             </div>
 
-            <div className='empty-controls' onClick={() => showReadingControls()}>
+            <div
+                className='controls-overlay controls-overlay__empty'
+                onClick={() => toggleReadingControls()}
+                // onTouchStart={(event: React.TouchEvent) => {
+                //     console.log(event);
+                //     event.preventDefault();
+                //     console.log(12);
+                // }}
+                // onMouseDown={(event: React.MouseEvent) => onClickDown(event)}
+                // onMouseUp={(event: React.MouseEvent) => onClickUp(event)}
+            >
             </div>
         </div>
     );

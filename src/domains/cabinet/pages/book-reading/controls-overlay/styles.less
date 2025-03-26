@@ -7,24 +7,18 @@
   height: 100vh;
   z-index: 100;
 
-  .empty-controls {
+  &__empty {
     position: absolute;
-    width: 100%;
-    height: 100vh;
     z-index: 200;
   }
 
-  .reading-controls {
+  &__reading {
     position: absolute;
-    width: 100%;
-    height: 100vh;
     z-index: 300;
   }
 
-  .paused-controls {
+  &__paused {
     position: absolute;
-    width: 100%;
-    height: 100vh;
     z-index: 400;
   }
 
@@ -53,11 +47,6 @@
     }
   }
 
-  .title {
-    font-size: 25px;
-    color: gray;
-  }
-
   .btn {
     &_white > span {
       color: white;
@@ -71,6 +60,12 @@
       width: 20px;
       height: 20px;
       font-size: 20px;
+    }
+
+    &_25 > span {
+      width: 25px;
+      height: 25px;
+      font-size: 25px;
     }
 
     &_30 > span {
