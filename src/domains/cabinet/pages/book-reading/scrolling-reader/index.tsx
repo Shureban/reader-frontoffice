@@ -68,7 +68,7 @@ const ScrollingReader: React.FC = observer(() => {
     return (
         <div className={'reader ' + (store.isOverlayVisible ? 'reader_paused' : '')} style={{fontSize: store.fontSize}} ref={containerRef}>
             <div className="reader__content">
-                {/*<div className='page-gap page-gap_50'></div>*/}
+                <div className='page-gap page-gap_50'></div>
 
                 {store.currentPage?.sentences.map((sentence, i) => {
                     return (
@@ -80,9 +80,9 @@ const ScrollingReader: React.FC = observer(() => {
                         </div>
                     );
                 })}
-                {/*<div className='page-gap page-gap_30'>*/}
-                {/*    <div className='reader__content__page-number'>{store.currentPage?.number}</div>*/}
-                {/*</div>*/}
+                <div className='page-gap page-gap_30'>
+                    <div className='reader__content__page-number'>{store.currentPage?.number}</div>
+                </div>
             </div>
         </div>
     );

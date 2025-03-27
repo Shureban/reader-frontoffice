@@ -3,12 +3,10 @@ import {observer} from "mobx-react";
 import {useRootStore} from "RootStoreContext";
 import {useParams} from "react-router-dom";
 import {BookPagesApi, UsersApi, UsersBooksApi} from "api/entrypoint";
-import ControlsOverlay from "domains/cabinet/pages/book-reading/controls-overlay";
 import {ListRequestSortColumn, TBooksPagesListRequest} from "api/requests/book-pages";
 import {SortType} from "api/enums/sort-type";
 import {TUpdateProgressRequest} from "api/requests/users-books";
 import {TUpdateUserSettingsRequest} from "api/requests/users";
-import ScrollingReader from "domains/cabinet/pages/book-reading/scrolling-reader";
 import BookReadingStore from "domains/cabinet/pages/book-reading/store";
 
 const BookReading: React.FC = observer(() => {
@@ -61,8 +59,8 @@ const BookReading: React.FC = observer(() => {
         .finally(() => appStore.unlockPage());
 
     return (<>
-        <ControlsOverlay />
-        <ScrollingReader />
+        {/*<ControlsOverlay />*/}
+        {/*<ScrollingReader />*/}
     </>);
 });
 
