@@ -6,7 +6,8 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
     plugins: [react(), tsconfigPaths()],
     server: {
-        port: 3211
+        port: 3211,
+        allowedHosts: ['751b-188-72-203-164.ngrok-free.app'],
     },
     preview: {
         port: 3211,

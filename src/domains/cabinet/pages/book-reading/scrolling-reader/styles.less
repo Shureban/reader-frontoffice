@@ -5,13 +5,14 @@
   height: 100vh; /* Ensure the container takes the full height of the viewport */
   display: flex;
   justify-content: center;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 
   &_paused {
     opacity: 10%;
   }
 
   &__content {
-    overflow: hidden;
     width: calc(100% - 110px);
 
     .page-gap {
