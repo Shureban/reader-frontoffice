@@ -8,7 +8,6 @@ import {ListRequestSortColumn, TBooksPagesListRequest} from "api/requests/book-p
 import {SortType} from "api/enums/sort-type";
 import {TUpdateProgressRequest} from "api/requests/users-books";
 import {TUpdateUserSettingsRequest} from "api/requests/users";
-import ScrollingReader from "domains/cabinet/pages/book-reading/scrolling-reader";
 import BookReadingStore from "domains/cabinet/pages/book-reading/store";
 
 const BookReading: React.FC = observer(() => {
@@ -62,7 +61,7 @@ const BookReading: React.FC = observer(() => {
 
     return (<>
         <ControlsOverlay />
-        <ScrollingReader />
+        {/*<ScrollingReader />*/}
     </>);
 });
 
