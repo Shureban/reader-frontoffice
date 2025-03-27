@@ -8,7 +8,7 @@ import PausedOverlay from "domains/cabinet/pages/book-reading/controls-overlay/o
 import ReadingOverlay from "domains/cabinet/pages/book-reading/controls-overlay/overlays/reading";
 import EmptyOverlay from "domains/cabinet/pages/book-reading/controls-overlay/overlays/empty";
 
-const ThreeSeconds = 3000;
+const ThreeSeconds = 5000;
 
 const Controls: React.FC = observer(() => {
     const store                                                       = BookReadingStore.getInstance();
