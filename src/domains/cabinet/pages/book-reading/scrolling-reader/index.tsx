@@ -45,7 +45,7 @@ const ScrollingReader: React.FC = observer(() => {
 
         const interval = setInterval(() => {
             const words         = store.getActiveSentence().split(' ');
-            const nextWordIndex = store.activeWordIndex + 10;
+            const nextWordIndex = store.activeWordIndex + 1;
 
             if (nextWordIndex >= words.length) {
                 store.forceNextSentence();

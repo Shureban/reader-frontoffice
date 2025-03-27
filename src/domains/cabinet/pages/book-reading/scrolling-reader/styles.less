@@ -1,11 +1,8 @@
 @import "../../../../../vars.less";
 
 .reader {
-  overflow: hidden;
   color: gray;
-  overflow-y: auto;
-  scroll-behavior: smooth;
-  height: 85vh; /* Ensure the container takes the full height of the viewport */
+  height: 100vh; /* Ensure the container takes the full height of the viewport */
   display: flex;
   justify-content: center;
 
@@ -15,7 +12,6 @@
 
   &__content {
     overflow: hidden;
-    position: relative;
     width: calc(100% - 110px);
 
     .page-gap {
