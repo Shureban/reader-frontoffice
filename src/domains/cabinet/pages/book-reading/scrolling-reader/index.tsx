@@ -19,7 +19,7 @@ const ScrollingReader: React.FC = observer(() => {
         const activeWord = containerRef.current?.querySelector('.active-word');
 
         if (activeWord) {
-            activeWord.scrollIntoView({behavior: 'smooth', block: 'center'});
+            activeWord.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'start'});
         }
     }, [store.activeSentenceNumber, store.activeWordIndex]);
 
@@ -45,7 +45,7 @@ const ScrollingReader: React.FC = observer(() => {
 
         const interval = setInterval(() => {
             const words         = store.getActiveSentence().split(' ');
-            const nextWordIndex = store.activeWordIndex + 1;
+            const nextWordIndex = store.activeWordIndex + 10;
 
             if (nextWordIndex >= words.length) {
                 store.forceNextSentence();
