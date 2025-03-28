@@ -9,7 +9,7 @@ import {BooksApi, UsersBooksApi} from "api/entrypoint";
 import BookViewSkeleton from "domains/cabinet/pages/book-view/components/skeleton";
 import {Button, Image, Progress, Typography} from "antd";
 import {TGetProgressRequest, TStartBookReadingRequest} from "api/requests/users-books";
-import {SyncOutlined} from '@ant-design/icons';
+import {ArrowLeftOutlined, SyncOutlined} from '@ant-design/icons';
 import {CabinetRoutes} from "routes/cabinet";
 import BookProgressResource from "api/resources/book-progress";
 
@@ -70,39 +70,43 @@ const BookView: React.FC = observer(() => {
     }
 
     return (
-        <Wrapper>
-            <div className='book-info'>
-                <div className='book-info__cover'>
+        <div className='book-info'>
+            <div className='book-info__cover'>
+                <div className='book-info__cover__arrow-back' onClick={() => navigate(CabinetRoutes.home())}>
+                    <ArrowLeftOutlined />
+                </div>
+                <div className='book-info__cover__image'>
                     <Image src={book.cover_file?.download_link} />
                 </div>
-                <div className='book-info__short-info'>
-                    <Title level={2} className='book-info__short-info__title'>{book.name}</Title>
-                    <Text className='book-info__short-info__subtitle'>
-                        {book.author.name}
-                    </Text>
-                </div>
+            </div>
+            <div className='book-info__short-info'>
+                <Title level={2} className='book-info__short-info__title'>{book.name}</Title>
+                <Text className='book-info__short-info__subtitle'>
+                    {book.author.name}
+                </Text>
+            </div>
+            <div className='book-info__progressbar'>
                 <Progress
                     percent={bookProgress?.progress}
-                    className='book-info__progress'
+                    className='book-info__progressbar__line'
                     percentPosition={{align: 'center', type: 'inner'}}
-                    size={['80vw', 20]}
+                    size={['100%', 20]}
                 />
-                <hr className='divider' />
-                <div className='book-info__description pl-20 pr-20'>{book.description}</div>
-                <div className='book-info__progress-action'>
-                    {bookInProgress && (
-                        <Button loading={buttonLoading ? {icon: <SyncOutlined spin />} : false} size={'large'} type={'primary'} block onClick={onClickContinueReading}>
-                            Continue reading
-                        </Button>
-                    )}
-                    {!bookInProgress && (
-                        <Button loading={buttonLoading ? {icon: <SyncOutlined spin />} : false} size={'large'} type={'primary'} block onClick={onClickStartReading}>
-                            Start reading
-                        </Button>
-                    )}
-                </div>
             </div>
-        </Wrapper>
+            <div className='book-info__description pl-20 pr-20'>{book.description}</div>
+            <div className='book-info__progress-action'>
+                {bookInProgress && (
+                    <Button loading={buttonLoading ? {icon: <SyncOutlined spin />} : false} size={'large'} type={'primary'} block onClick={onClickContinueReading}>
+                        Continue reading
+                    </Button>
+                )}
+                {!bookInProgress && (
+                    <Button loading={buttonLoading ? {icon: <SyncOutlined spin />} : false} size={'large'} type={'primary'} block onClick={onClickStartReading}>
+                        Start reading
+                    </Button>
+                )}
+            </div>
+        </div>
     );
 });
 

@@ -6,11 +6,24 @@
     align-items: center;
     justify-content: center;
     background: linear-gradient(to top, #ebebeb, #ffffff);
-    height: 45vh;
+    height: 50vh;
 
-    div {
-      width: 25vh;
-      height: 36vh;
+    &__arrow-back {
+      color: #a5a5a5;
+      display: flex;
+      justify-content: center;
+      font-size: 25px;
+      position: absolute;
+      width: 60px;
+      height: 80px;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    &__image > div {
+      width: 27vh;
+      height: 40vh;
       overflow: hidden; /* Обрізає контент, що виходить за межі блоку */
       box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5); /* Овальна тінь */
       object-fit: cover; /* Зберігає пропорції зображення */
@@ -39,12 +52,17 @@
     text-indent: 2em;
   }
 
-  &__progress {
+  &__progressbar {
+    width: 100%;
     display: flex;
     justify-content: center;
 
-    .ant-progress-bg {
-      background-color: @brandYellowColor;
+    &__line {
+      width: calc(100vw - 40px);
+
+      .ant-progress-bg {
+        background-color: @brandYellowColor;
+      }
     }
   }
 
@@ -59,10 +77,6 @@
     .ant-btn {
       border-radius: 8px 8px 0 0;
     }
-  }
-
-  .divider {
-    border-top: 1px solid #c3c3c3;
   }
 }
 
