@@ -2,17 +2,19 @@
 
 .content-wrapper {
   background-color: white;
-  padding-top: 64px;
+  padding-bottom: @menuHeight;
 }
 
-.cabinet-header {
+.cabinet-footer {
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
-  background-color: @brandYellowColor; /* Example background color */
-  z-index: 1000;
-  padding: 0 24px;
+  z-index: 100;
+  padding: 0;
+  background-color: @brandGreyLightColor;
+  border-top: 1px solid #d5d5d5;
+  opacity: 96%;
 }
 
 .loader-overlay {

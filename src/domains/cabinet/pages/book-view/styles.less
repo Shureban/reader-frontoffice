@@ -5,8 +5,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to top, #ebebeb, #ffffff);
     height: 50vh;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(to top, #ebebeb, #ffffff) no-repeat fixed center;
+    background-size: cover;
+    overflow: hidden;
 
     &__arrow-back {
       color: #a5a5a5;
@@ -14,8 +20,8 @@
       justify-content: center;
       font-size: 25px;
       position: absolute;
-      width: 60px;
-      height: 80px;
+      height: 74px;
+      padding-left: @defaultWidthPadding;
       top: 0;
       left: 0;
       z-index: 1000;
@@ -30,11 +36,49 @@
     }
   }
 
+  &__metadata {
+    z-index: 20;
+    position: relative;
+    background-color: white;
+    padding-top: 20px;
+    padding-left: @defaultWidthPadding;
+    padding-right: @defaultWidthPadding;
+  }
+
+  .hr-text {
+    border: 0;
+    line-height: 1em;
+    position: relative;
+    text-align: center;
+    height: 1.5em;
+    font-size: 12px;
+
+    &::before {
+      content: "";
+      background: linear-gradient(to right, transparent, @brandGreyDarkColor, transparent);
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 1px;
+    }
+
+    &::after {
+      content: attr(data-content);
+      position: relative;
+      padding: 0 7px;
+      line-height: 1.5em;
+      color: black;
+      background-color: white;
+    }
+  }
+
   &__short-info {
     text-align: center;
     margin-bottom: 10px;
 
     &__title {
+      margin-top: 0 !important;
       margin-bottom: 0 !important;
       font-family: @brandFontFamily;
     }
@@ -48,34 +92,40 @@
     font-family: @brandFontFamily;
     margin-top: 10px;
     margin-bottom: 50px;
-    padding: 0 10px;
     text-indent: 2em;
   }
 
-  &__progressbar {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-
-    &__line {
-      width: calc(100vw - 40px);
-
-      .ant-progress-bg {
-        background-color: @brandYellowColor;
-      }
-    }
-  }
-
-  &__progress-action {
+  .play-button {
     font-family: @brandFontFamily;
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    z-index: 1000; /* Забезпечує, що кнопка буде поверх інших елементів */
+    z-index: 200;
+
+    div, button {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .ant-progress {
+      z-index: 20;
+
+      .ant-progress-inner {
+        font-size: 0 !important;
+        width: 56px !important;
+        height: 56px !important;
+      }
+    }
 
     .ant-btn {
-      border-radius: 8px 8px 0 0;
+      border-radius: 50px;
+      height: 56px;
+      width: 56px;
+      font-size: 57px;
+      z-index: 10;
     }
   }
 }

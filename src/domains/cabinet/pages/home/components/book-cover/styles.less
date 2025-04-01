@@ -1,14 +1,17 @@
 @import "../../../../../../vars.less";
 
+@width: 43vw;
+@height: 38vh;
+
 .book-cover {
-  width: 130px;
-  height: 195px;
+  width: @width;
+  height: @height;
   overflow: hidden; /* Обрізає контент, що виходить за межі блоку */
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5); /* Овальна тінь */
 
   .ant-image {
-    width: 130px;
-    height: 200px;
+    width: @width;
+    height: @height;
     object-fit: cover; /* Зберігає пропорції зображення */
   }
 }

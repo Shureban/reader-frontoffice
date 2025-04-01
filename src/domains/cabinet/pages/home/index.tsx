@@ -43,23 +43,25 @@ const Home: React.FC = observer(() => {
 
     return (
         <Wrapper>
-            {availableBooks.length > 0 && (<>
-                <div className='m-20 fs-22'>Your collection</div>
-                <div className="scrollable-strip pl-20">
-                    {availableBooks.map((book, index) => (<div key={index}>
-                        <BookCover book={book} />
-                    </div>))}
-                </div>
-            </>)}
+            <div className='home'>
+                {booksInProgress.length > 0 && (<>
+                    <div className='mt-20 ml-d mr-d fs-22'>Books in progress</div>
+                    <div className="gradient-row scrollable-strip mt-10 pl-d">
+                        {booksInProgress.map((bookProgress, index) => (<div key={index}>
+                            <BookCover book={bookProgress.book} />
+                        </div>))}
+                    </div>
+                </>)}
 
-            {booksInProgress.length > 0 && (<>
-                <div className='m-20 fs-22'>Books in progress</div>
-                <div className="scrollable-strip pl-20">
-                    {booksInProgress.map((bookProgress, index) => (<div key={index}>
-                        <BookCover book={bookProgress.book} />
-                    </div>))}
-                </div>
-            </>)}
+                {availableBooks.length > 0 && (<>
+                    <div className='mt-20 ml-d mr-d fs-22'>Your collection</div>
+                    <div className="gradient-row scrollable-strip mt-10 pl-d">
+                        {availableBooks.map((book, index) => (<div key={index}>
+                            <BookCover book={book} />
+                        </div>))}
+                    </div>
+                </>)}
+            </div>
         </Wrapper>
     );
 });

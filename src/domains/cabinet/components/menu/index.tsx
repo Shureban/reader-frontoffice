@@ -4,7 +4,7 @@ import {observer} from "mobx-react";
 import {CabinetRoutes} from "routes/cabinet";
 import {AuthRoutes} from "routes/auth";
 import {useNavigate} from "react-router-dom";
-
+import {HomeFilled, LogoutOutlined} from "@ant-design/icons";
 
 const Menu: React.FC = observer(() => {
     const navigate = useNavigate();
@@ -12,12 +12,14 @@ const Menu: React.FC = observer(() => {
     return (
         <div className='menu'>
             <div className='menu__left-section'>
-                <div className="home" onClick={() => navigate(CabinetRoutes.home())}>
-                    <img src='/logo-with-text.png' alt='logo' />
+                <div className="menu__button" onClick={() => navigate(CabinetRoutes.home())}>
+                    <HomeFilled />
                 </div>
             </div>
             <div className='menu__right-section'>
-                <div className='menu__item' onClick={() => navigate(AuthRoutes.logout())}>Logout</div>
+                <div className='menu__button' onClick={() => navigate(AuthRoutes.logout())}>
+                    <LogoutOutlined />
+                </div>
             </div>
         </div>
     );

@@ -1,18 +1,17 @@
 @import "../../../../vars.less";
 
 .menu {
-  height: 64px;
+  height: @menuHeight;
   width: 100%;
   color: white;
   display: flex;
   justify-content: space-between;
+  padding: 0 @defaultWidthPadding;
 
-  .home {
-    height: 64px;
-    
-    img {
-      width: 100px;
-      margin-top: 8px;
-    }
+  &__button {
+    display: flex;
+    height: @menuHeight;
+    color: @brandGreyDarkColor;
+    font-size: 24px;
   }
 }

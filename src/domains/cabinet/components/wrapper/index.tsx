@@ -2,7 +2,7 @@ import './styles.less';
 import React from "react";
 import {observer} from "mobx-react";
 import {Layout, Spin} from "antd";
-import {Header} from "antd/es/layout/layout";
+import {Footer} from "antd/es/layout/layout";
 import Menu from "domains/cabinet/components/menu";
 import {useRootStore} from "RootStoreContext";
 
@@ -21,13 +21,13 @@ const Wrapper: React.FC = observer((props: IWrapperProps) => {
                 </div>
             )}
 
-            <Header className='cabinet-header'>
-                <Menu />
-            </Header>
-
             <div className='content-wrapper'>
                 {props.children}
             </div>
+
+            <Footer className='cabinet-footer'>
+                <Menu />
+            </Footer>
         </Layout>
     );
 });
