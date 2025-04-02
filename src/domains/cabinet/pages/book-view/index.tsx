@@ -7,11 +7,12 @@ import BookResource from "api/resources/book";
 import {useRootStore} from "RootStoreContext";
 import {BooksApi, UsersBooksApi} from "api/entrypoint";
 import BookViewSkeleton from "domains/cabinet/pages/book-view/components/skeleton";
-import {Button, Image, Progress, Typography} from "antd";
+import {Button, Image, Typography} from "antd";
 import {TGetProgressRequest, TStartBookReadingRequest} from "api/requests/users-books";
 import {ArrowLeftOutlined, PlayCircleOutlined, SyncOutlined} from '@ant-design/icons';
 import {CabinetRoutes} from "routes/cabinet";
 import BookProgressResource from "api/resources/book-progress";
+import Progressbar from "domains/cabinet/pages/book-view/components/progressbar";
 
 const {Title, Text} = Typography;
 
@@ -47,6 +48,8 @@ const BookView: React.FC = observer(() => {
             .then(() => setBookInProgress(true))
             .catch(() => setBookInProgress(false));
     }, [book]);
+
+    const handleClickPlayButton = () => bookInProgress ? onClickContinueReading() : onClickStartReading();
 
     const onClickStartReading = () => Promise.resolve()
         .then(() => appStore.lockPage())
@@ -90,15 +93,19 @@ const BookView: React.FC = observer(() => {
 
                     <div className='book-info__description'>{book.description}</div>
                 </div>
-                <div className='play-button'>
-                    <Progress type="dashboard" percent={bookProgress?.progress || 0} gapDegree={1} strokeColor={{
-                        '0%': '#87d068',
-                        '50%': '#ffe58f',
-                        '100%': '#ffccc7',
-                    }} />
-                    <Button loading={buttonLoading ? {icon: <SyncOutlined spin />} : false} size='small' type={'primary'} block onClick={onClickContinueReading}>
-                        <PlayCircleOutlined />
-                    </Button>
+                <div className='play-button' onClick={handleClickPlayButton}>
+                    <div className='play-button__progress'>
+                        <Progressbar
+                            value={bookProgress?.progress || 0}
+                            width={60} height={60} thickness={10}
+                            startColor={'f9b801'} endColor={'ff6600'} defaultColor={'cfd8dc'}
+                        />
+                    </div>
+                    <div className='play-button__play'>
+                        <Button loading={buttonLoading ? {icon: <SyncOutlined spin />} : false} size='small' type={'primary'} block>
+                            <PlayCircleOutlined />
+                        </Button>
+                    </div>
                 </div>
             </div>
         </Wrapper>

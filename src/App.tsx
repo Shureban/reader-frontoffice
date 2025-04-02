@@ -20,7 +20,7 @@ import BookReading from "domains/cabinet/pages/book-reading";
 
 const App: React.FC = observer(() => {
     if (!isMobile) {
-        return <div>Is not a mobile device</div>;
+        // return <div>Is not a mobile device</div>;
     }
 
     const rootStore  = useRootStore();

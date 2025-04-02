@@ -98,35 +98,32 @@
   .play-button {
     font-family: @brandFontFamily;
     position: fixed;
-    bottom: 0;
+    bottom: 1px;
     left: 0;
     width: 100%;
     z-index: 200;
 
-    div, button {
-      position: absolute;
+    &__progress {
       bottom: 0;
+      position: absolute;
       left: 50%;
       transform: translateX(-50%);
+      z-index: 10;
     }
 
-    .ant-progress {
+    &__play {
+      bottom: -1px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 20;
 
-      .ant-progress-inner {
-        font-size: 0 !important;
-        width: 56px !important;
-        height: 56px !important;
+      .ant-btn {
+        border-radius: 50px;
+        height: 54px;
+        width: 54px;
+        font-size: 54px;
       }
-    }
-
-    .ant-btn {
-      border-radius: 50px;
-      height: 56px;
-      width: 56px;
-      font-size: 57px;
-      z-index: 10;
     }
   }
 }
-
